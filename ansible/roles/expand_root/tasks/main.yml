@@ -10,8 +10,6 @@
   with_items: "{{ grow_partitions }}"
   ignore_errors: yes
 
-- debug: msg="{{ growpart_result }}"
-
 - name: partprobe
   shell: "partprobe {{ drive }}"
 
@@ -20,6 +18,7 @@
 
 - name: lvresize
   shell: "lvresize -l +100%FREE {{ lvm_root_partition }}"
+  ignore_errors: yes
 
 - name: resize2fs
   shell: "resize2fs {{ lvm_root_partition }}"

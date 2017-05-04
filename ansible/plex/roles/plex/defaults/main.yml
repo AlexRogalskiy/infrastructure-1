@@ -1,0 +1,3 @@
+plexupdate_repo: https://github.com/mrworf/plexupdate
+plex_path: /var/lib/plexmediaserver
+plexupdate_path: "{{ plex_path }}/plexupdate"

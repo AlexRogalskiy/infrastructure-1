@@ -1,0 +1,59 @@
+---
+
+- name: Add nfs-common package
+  apt:
+    pkg: nfs-common
+    state: present
+
+- name: Add mount to fstab
+  mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
+
+- name: Add plex user
+  user:
+    name: plex
+    state: present
+    createhome: no
+
+- name: Add plexupdate systemd service
+  template:
+    src: "service"
+    dest: "/etc/systemd/system/plexupdate.service"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: deploy systemd plexupdate timer
+  template:
+    src: "timer"
+    dest: "/etc/systemd/system/plexupdate.timer"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create plex media server path
+  file:
+    path: "{{ plex_path }}"
+    owner: plex
+    group: plex
+    mode: 0744
+    state: directory
+    recurse: yes
+
+- name: deploy plex update configuration file
+  template:
+    src: "config"
+    dest: "{{ plex_path }}/.plexupdate"
+    owner: plex
+    group: plex
+    mode: 0744
+
+- name: download plexupdate
+  git:
+    repo: "{{ plexupdate_repo }}"
+    dest: "{{ plexupdate_path }}"
+    clone: yes
+
+- name: Run plexupdate service
+  service:
+    name: plexupdate
+    state: restarted

@@ -1,0 +1,9 @@
+EMAIL="{{ plex_email }}"
+PASS="{{ plex_password }}"
+DOWNLOADDIR="/tmp"
+
+PLEXSERVER="127.0.0.1"
+AUTOUPDATE="yes"
+AUTOINSTALL="yes"
+AUTODELETE="yes"
+PUBLIC="no"

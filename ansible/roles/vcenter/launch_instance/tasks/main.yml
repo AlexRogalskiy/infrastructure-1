@@ -44,7 +44,6 @@
     instance: "{{ vcenter_lookup_vm.instance }}"
   when: vcenter_lookup_vm.instance is defined
 
-
 - name: Add instances host to inventory
   action: add_host hostname={{ instance.ipv4 }} groupname=instances
   when: instance is defined

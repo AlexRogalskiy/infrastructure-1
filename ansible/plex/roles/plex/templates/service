@@ -1,0 +1,6 @@
+[Unit]
+Description=Run plexupdate
+After=network.target
+
+[Service]
+ExecStart={{ plexupdate_path }}/plexupdate.sh --config {{ plex_path }}/.plexupdate
