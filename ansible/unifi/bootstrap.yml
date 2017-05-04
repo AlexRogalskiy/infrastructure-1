@@ -10,6 +10,7 @@
     vm_template: "ubuntu-template"
     vm_type: "unifi"
     vm_disk_size: 20
+    vm_memory_mb: "1024"
 
   roles:
     - ../roles/vcenter/launch_instance
