@@ -5,8 +5,8 @@
     hostname: "{{ vcenter_host }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
-    esxi_hostname: "{{ vsphere_host }}"
     validate_certs: no
+    esxi_hostname: "{{ vsphere_host }}"
     datacenter: "{{ vcenter_datacenter }}"
     state: poweredon
     name: "{{ vm_name }}"
@@ -23,11 +23,35 @@
       hostname: "{{ vm_name }}"
   register: vcenter
 
+- name: Set vm
+  set_fact:
+    instance: "{{ vcenter.instance }}"
+  when: vcenter.instance is defined
+
+- name: Find vm
+  vmware_guest_facts:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    datacenter: "{{ vcenter_datacenter }}"
+    validate_certs: no
+    name: "{{ vm_name }}"
+  when: vcenter.instance is not defined
+  register: vcenter_lookup_vm
+
+- name: Set found vm
+  set_fact:
+    instance: "{{ vcenter_lookup_vm.instance }}"
+  when: vcenter_lookup_vm.instance is defined
+
+
 - name: Add instances host to inventory
-  action: add_host hostname={{ vcenter.instance.ipv4 }} groupname=instances
+  action: add_host hostname={{ instance.ipv4 }} groupname=instances
+  when: instance is defined
 
 - name: Wait for instances to become available
   wait_for:
     state=started
-    host={{ vcenter.instance.ipv4 }}
+    host={{ instance.ipv4 }}
     port=22
+  when: instance is defined
