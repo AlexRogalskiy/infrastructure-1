@@ -4,6 +4,11 @@ set +x
 
 trap 'abort' 0
 
+if [ ! -f ./private_vars.json ]; then
+  echo "Private vars file does not exist at ./private_vars.json. Please create it, see private_vars.example.json for reference"
+  exit 2
+fi
+
 join_list_to_string()
 {
     items=($@)

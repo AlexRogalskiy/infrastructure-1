@@ -1,0 +1,34 @@
+---
+
+- name: Launch the VM
+  fixed_vmware_guest:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    esxi_hostname: "{{ vsphere_host }}"
+    validate_certs: no
+    datacenter: "{{ vcenter_datacenter }}"
+    state: poweredon
+    name: "{{ vm_name }}"
+    guest_id: "{{ vm_guest_id|default('ubuntu64Guest') }}"
+    disk: "{{ vm_disk }}"
+    hardware:
+      memory_mb: "{{ vm_memory_mb|default(512) }}"
+      num_cpus: "{{ vm_num_cpus|default(1) }}"
+      scsi: paravirtual
+    networks: "{{ vm_networks }}"
+    template: "{{ vm_template }}"
+    wait_for_ip_address: yes
+    customization:
+      hostname: "{{ vm_name }}"
+  register: vcenter
+
+- name: Add instances host to inventory
+  action: add_host hostname={{ vcenter.instance.ipv4 }} groupname=instances
+
+- name: Wait for instances to become available
+  wait_for:
+    state=started
+    host={{ vcenter.instance.ipv4 }}
+    port=22
+    delay=30

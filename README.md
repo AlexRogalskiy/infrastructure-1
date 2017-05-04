@@ -58,5 +58,9 @@ To install ansible using brew, run:
 
 ```brew install ansible```
 
+You also need to install some additional python modules, run:
+
+```pip install pyvmomi```
+
 #### Usage
 To create a new vm and run ansible against it, run `./run-ansible <name-of-app>`

@@ -1,0 +1,7 @@
+vm_networks:
+  - name: VM Network
+vm_disk_size: 10
+vm_disk:
+  - size_gb: "{{ vm_disk_size }}"
+    type: thin
+    datastore: "{{ vsphere_datastore }}"

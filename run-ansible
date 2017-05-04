@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+set +x
+
+. ./common
+
+display_error()
+{
+    echo "Usage: "
+    echo "$0 APP($SEPARATED_APP_NAMES)"
+    exit 2
+}
+
+APP=$1
+
+if [[ ! ("${APP_NAMES[@]}" =~ "$APP") ]]; then
+    display_error
+fi
+
+# Convert debug environment variable to something that ansible understands
+if [ -n "$DEBUG" ]; then
+    VERBOSE="-vvvv"
+fi
+
+ansible-playbook -i ansible/hosts ansible/${APP}/bootstrap.yml -e "@private_vars.json" $VERBOSE
+
+trap : 0
+echo >&2 'Done'
