@@ -12,6 +12,12 @@
 - name: Add identity key to authorized keys on host
   authorized_key: user=ubuntu key="{{ lookup('file', ssh_public_key_path) }}"
 
+- name: Enable rc-local
+  command: systemctl enable rc-local.service
+
+- name: Replace rc.local
+  copy: src=rc.local dest=/etc/rc.local owner=root group=root mode=0755 force=yes
+
 - name: Disable password login
   lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PasswordAuthentication" line="PasswordAuthentication no"
   notify: restart sshd
