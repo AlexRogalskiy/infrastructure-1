@@ -20,6 +20,14 @@
     src: /dev/cdrom
     fstype: iso9660
     opts: loop
+    state: unmounted
+
+- name: Unmount /mnt/cdrom
+  mount:
+    name: /mnt/cdrom
+    src: /dev/cdrom
+    fstype: iso9660
+    opts: loop
     state: absent
 
 - name: Remove /home/ubuntu/linux.iso
