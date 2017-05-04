@@ -31,4 +31,3 @@
     state=started
     host={{ vcenter.instance.ipv4 }}
     port=22
-    delay=30
