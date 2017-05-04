@@ -11,7 +11,7 @@
     vm_type: "plex"
     vm_memory_mb: "4096"
     vm_num_cpus: 16
-    vm_disk_size: 50
+    vm_disk_size: 100
 
   roles:
     - ../roles/vcenter/launch_instance
