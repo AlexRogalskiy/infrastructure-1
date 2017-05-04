@@ -1,0 +1,25 @@
+---
+
+- name: Ensure /mnt/cdrom is present
+  file: path=/mnt/cdrom state=directory
+
+- name: Mount /mnt/cdrom to /home/ubuntu/linux.iso
+  mount:
+    name: /mnt/cdrom
+    src: /dev/cdrom
+    fstype: iso9660
+    opts: loop
+    state: mounted
+
+- name: Extract and install vmware tools
+  shell: cd /tmp && tar -zxpf /mnt/cdrom/VMwareTools-*.tar.gz -C /tmp/ && /tmp/vmware-tools-distrib/vmware-install.pl --force-install --default
+
+- name: Unmount /mnt/cdrom
+  mount:
+    name: /mnt/cdrom
+    state: unmounted
+
+- name: Remove /home/ubuntu/linux.iso
+  file:
+    path: /home/ubuntu/linux.iso
+    state: absent

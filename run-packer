@@ -1,0 +1,32 @@
+#!/bin/bash
+set -e
+set +x
+
+. ./common
+
+display_error()
+{
+    echo "Usage: "
+    echo "$0 IMAGE($SEPARATED_IMAGE_NAMES)"
+    exit 2
+}
+
+IMAGE=$1
+
+if [[ ! ("${IMAGE_NAMES[@]}" =~ "$IMAGE") ]]; then
+    display_error
+fi
+
+if [ ! -f ./private_vars.json ]; then
+  echo "Private vars file does not exist at ./private_vars.json. Please create it, see private_vars.example.json for reference"
+  exit 2
+fi
+
+if [ -n "$DEBUG" ]; then
+  PACKER_LOG=1 packer build -force -var-file=private_vars.json packer/$IMAGE/packer.json
+else
+  packer build -force -var-file=private_vars.json packer/$IMAGE/packer.json
+fi
+
+trap : 0
+echo >&2 'Done'

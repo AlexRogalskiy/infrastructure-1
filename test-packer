@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e
+set +x
+
+. ./common
+
+display_error()
+{
+    echo "Usage: "
+    echo "$0 IMAGE($SEPARATED_IMAGE_NAMES)"
+    exit 2
+}
+
+IMAGE=$1
+
+if [[ ! ("${IMAGE_NAMES[@]}" =~ "$IMAGE") ]]; then
+    display_error
+fi
+
+VAGRANT_CWD=packer/$IMAGE vagrant destroy --force
+VAGRANT_CWD=packer/$IMAGE vagrant up --provision
+
+trap : 0
+echo >&2 'Done'
+
+VAGRANT_CWD=packer/$IMAGE vagrant destroy

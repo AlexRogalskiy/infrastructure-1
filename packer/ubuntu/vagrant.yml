@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  user: ubuntu
+  become: yes
+
+  roles:
+    - base
+    - vmtools
+    - purge
+
+  vars:
+    ssh_public_key_path: "~/.ssh/id_rsa.pub"

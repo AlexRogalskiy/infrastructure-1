@@ -1,0 +1,99 @@
+{
+  "builders": [
+    {
+      "name": "ubuntu",
+      "type": "vmware-iso",
+      "guest_os_type": "ubuntu-64",
+      "tools_upload_flavor": "linux",
+      "headless": true,
+
+      "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.2-server-amd64.iso",
+      "iso_checksum": "737ae7041212c628de5751d15c3016058b0e833fdc32e7420209b76ca3d0a535",
+      "iso_checksum_type": "sha256",
+
+      "ssh_port": 22,
+      "ssh_timeout": "15m",
+      "ssh_username": "ubuntu",
+      "ssh_password": "ubuntu",
+      "ssh_wait_timeout": "30m",
+
+      "vnc_disable_password": true,
+
+      "disk_type_id": "thin",
+      "disk_size": "8000",
+
+      "floppy_files": [
+        "packer/ubuntu/preseed.cfg"
+      ],
+
+      "boot_command": [
+        "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "/install/vmlinuz noapic ",
+        "preseed/file=/floppy/preseed.cfg ",
+        "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+        "hostname={{ .Name }} ",
+        "fb=false debconf/frontend=noninteractive ",
+        "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+        "grub-installer/bootdev=/dev/sda ",
+        "initrd=/install/initrd.gz -- <enter>"
+      ],
+
+      "shutdown_command": "sudo systemctl poweroff",
+
+      "remote_type": "esx5",
+      "remote_host": "{{user `vsphere_host`}}",
+      "remote_datastore": "{{user `vsphere_datastore`}}",
+      "remote_username": "{{user `vsphere_username`}}",
+      "remote_password": "{{user `vsphere_password`}}",
+
+      "vmx_data": {
+        "memsize": "4096",
+        "numvcpus": "4",
+
+        "ethernet0.networkName": "VM Network"
+      },
+
+      "format": "ovf"
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vsphere-template",
+
+      "host": "{{user `vcenter_host`}}",
+      "username": "{{user `vcenter_username`}}",
+      "password": "{{user `vcenter_password`}}",
+
+      "datacenter": "{{user `vcenter_datacenter`}}",
+      "datastore": "{{user `vcenter_datastore`}}",
+
+      "os_type": "ubuntu64Guest",
+      "os_id": "94"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "packer/ubuntu/playbook.yml",
+      "user": "ubuntu",
+      "extra_arguments": ["--extra-vars", "ssh_public_key_path={{user `ssh_public_key_path`}} ansible_python_interpreter=/usr/bin/python3"]
+    }
+  ],
+  "variables": {
+    "vcenter_datacenter": "",
+    "vcenter_datastore": "",
+    "vcenter_host": "",
+    "vcenter_password": "",
+    "vcenter_username": "",
+    "vsphere_datastore": "",
+    "vsphere_host": "",
+    "vsphere_password": "",
+    "vsphere_type": "esx5",
+    "vsphere_username": "",
+    "ssh_public_key_path": "~/.ssh/id_rsa.pub"
+  }
+}

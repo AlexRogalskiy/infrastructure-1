@@ -1,0 +1,19 @@
+---
+
+- name: Clean up dhcp leases
+  shell: rm /var/lib/dhcp/*
+
+- name: Remove ssh keys
+  shell: rm -f /etc/ssh/*host*
+
+- name: Clean up udev
+  shell: rm -f /etc/udev/rules.d/70-persistent-net.rules && mkdir /etc/udev/rules.d/70-persistent-net.rules && rm -rf /dev/.udev/ && rm -f /lib/udev/rules.d/75-persistent-net-generator.rules
+
+- name: Clean up apt
+  shell: apt-get -qy autoremove && apt-get clean -qy && apt-get autoclean -qy
+
+- name: Remove logs
+  shell: find /var/log -type f | while read f; do echo -ne '' > $f; done;
+
+- name: Remove bash history
+  shell: unset HISTFILE && rm -f /root/.bash_history && rm -f /home/ubuntu/.bash_history

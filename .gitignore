@@ -1,0 +1,6 @@
+private_vars.json
+packer_cache
+packer-*
+.vagrant
+*.retry
+*.log

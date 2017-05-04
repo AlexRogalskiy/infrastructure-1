@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+set +x
+
+trap 'abort' 0
+
+join_list_to_string()
+{
+    items=($@)
+    for item in "${items[@]}"; do
+        if [[ "${item}" == "${items[0]}" ]]; then
+            joined="$item"
+        else
+            joined="$joined|$item"
+        fi
+    done
+    echo "$joined"
+}
+
+abort()
+{
+    echo >&2 'Aborted'
+    echo "An error occurred. Exiting..." >&2
+    exit 1
+}
+
+IMAGE_NAMES=("ubuntu")
+SEPARATED_IMAGE_NAMES=$(join_list_to_string ${IMAGE_NAMES[@]})
+
+APP_NAMES=("unifi")
+SEPARATED_APP_NAMES=$(join_list_to_string ${APP_NAMES[@]})
