@@ -34,7 +34,7 @@
         "/install/vmlinuz noapic ",
         "preseed/file=/floppy/preseed.cfg ",
         "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-        "hostname={{ .Name }} ",
+        "hostname={{ build_name }} ",
         "fb=false debconf/frontend=noninteractive ",
         "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
         "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
@@ -72,7 +72,9 @@
       "datastore": "{{user `vcenter_datastore`}}",
 
       "os_type": "ubuntu64Guest",
-      "os_id": "94"
+      "os_id": "94",
+
+      "vm_name": "{{ build_name }}-template"
     }
   ],
   "provisioners": [
