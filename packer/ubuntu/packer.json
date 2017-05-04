@@ -57,7 +57,8 @@
         "ethernet0.networkName": "VM Network"
       },
 
-      "format": "ovf"
+      "format": "ovf",
+      "ovftool_options": ["--noImageFiles"]
     }
   ],
   "post-processors": [
