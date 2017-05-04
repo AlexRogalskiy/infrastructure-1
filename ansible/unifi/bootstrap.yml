@@ -20,4 +20,5 @@
   become: yes
 
   roles:
+    - ../roles/expand_root
     - unifi

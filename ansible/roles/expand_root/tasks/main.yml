@@ -1,0 +1,25 @@
+---
+
+- name: Install cloud-guest-utils
+  apt:
+    name: cloud-guest-utils
+    state: present
+
+- name: growpart
+  shell: "growpart {{ drive }} {{ item }}"
+  with_items: "{{ grow_partitions }}"
+  ignore_errors: yes
+
+- debug: msg="{{ growpart_result }}"
+
+- name: partprobe
+  shell: "partprobe {{ drive }}"
+
+- name: pvresize
+  shell: "pvresize {{ root_partition }}"
+
+- name: lvresize
+  shell: "lvresize -l +100%FREE {{ lvm_root_partition }}"
+
+- name: resize2fs
+  shell: "resize2fs {{ lvm_root_partition }}"
