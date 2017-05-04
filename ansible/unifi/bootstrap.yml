@@ -6,8 +6,7 @@
   gather_facts: false
 
   vars:
-    hash: "{{ 99999999 | random | to_uuid | hash('sha1') }}"
-    vm_name: "{{ vm_type }}-{{ hash[:6] }}"
+    vm_name: "unifi"
     vm_template: "ubuntu-template"
     vm_type: "unifi"
     vm_disk_size: 20
