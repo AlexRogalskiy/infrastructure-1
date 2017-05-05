@@ -52,6 +52,15 @@
     repo: "{{ plexupdate_repo }}"
     dest: "{{ plexupdate_path }}"
     clone: yes
+    force: yes
+
+- name: Set plexupdate directory user
+  file:
+    path: "{{ plexupdate_path }}"
+    owner: root
+    group: root
+    state: directory
+    recurse: yes
 
 - name: Run plexupdate service
   service:
