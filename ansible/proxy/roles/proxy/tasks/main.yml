@@ -1,0 +1,13 @@
+---
+
+- name: Copy nginx configs
+  template: src="{{ item }}.conf" dest="/etc/nginx/conf.d/{{ item }}.conf"
+  with_items:
+    - torrent
+    - torrent_private
+    - usenet
+    - sonarr
+    - radarr
+    - network
+  notify:
+    - restart nginx

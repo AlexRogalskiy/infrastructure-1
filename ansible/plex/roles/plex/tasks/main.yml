@@ -22,7 +22,7 @@
     group: root
     mode: 0644
 
-- name: deploy systemd plexupdate timer
+- name: Add systemd plexupdate timer
   template:
     src: "timer"
     dest: "/etc/systemd/system/plexupdate.timer"
@@ -39,7 +39,7 @@
     state: directory
     recurse: yes
 
-- name: deploy plex update configuration file
+- name: Add plex update configuration file
   template:
     src: "config"
     dest: "{{ plex_path }}/.plexupdate"
@@ -47,7 +47,7 @@
     group: plex
     mode: 0744
 
-- name: download plexupdate
+- name: Download plexupdate
   git:
     repo: "{{ plexupdate_repo }}"
     dest: "{{ plexupdate_path }}"

@@ -1,0 +1,24 @@
+---
+
+- name: Launch server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    vm_name: "proxy"
+    vm_template: "ubuntu-template"
+    vm_type: "proxy"
+
+  roles:
+    - ../roles/vcenter/launch_instance
+
+- name: Setup proxy
+  hosts: instances
+  user: ubuntu
+  become: yes
+
+  roles:
+    - ../roles/expand_root
+    - ../roles/nginx
+    - proxy
