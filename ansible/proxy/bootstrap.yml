@@ -18,7 +18,13 @@
   user: ubuntu
   become: yes
 
+  vars:
+    certbot_domains:
+      - domain: "network.home.dmarby.se"
+        delegated: "home.dmarby.se"
+
   roles:
     - ../roles/expand_root
+    - ../roles/certbot
     - ../roles/nginx
     - proxy

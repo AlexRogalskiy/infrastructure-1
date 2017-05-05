@@ -12,5 +12,7 @@
   "ssh_public_key_path": "~/.ssh/id_rsa.pub",
   "storage_nfs_mount": "example.com:/share",
   "plex_email": "",
-  "plex_password": ""
+  "plex_password": "",
+  "certbot_email": "",
+  "digitalocean_token": ""
 }
