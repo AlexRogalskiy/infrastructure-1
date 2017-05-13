@@ -22,7 +22,7 @@ if [ -n "$DEBUG" ]; then
     VERBOSE="-vvvv"
 fi
 
-ansible-playbook -i ansible/hosts ansible/${APP}/bootstrap.yml -e "@private_vars.json" $VERBOSE
+ANSIBLE_SSH_PIPELINING=True ansible-playbook -i ansible/hosts ansible/${APP}/bootstrap.yml -e "@private_vars.json" $VERBOSE
 
 trap : 0
 echo >&2 'Done'
