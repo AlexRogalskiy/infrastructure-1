@@ -4,3 +4,4 @@ packer-*
 .vagrant
 *.retry
 *.log
+ansible/usg/client

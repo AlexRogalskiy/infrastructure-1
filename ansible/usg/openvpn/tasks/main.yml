@@ -1,0 +1,86 @@
+---
+
+- name: Ensure certificate directory exists
+  file:
+    path: "{{ cert_dir }}"
+    owner: root
+    group: root
+    state: directory
+
+- name: Generate ca key
+  command: openssl req -nodes -newkey rsa:{{ rsa_bits }} -keyout ca-key.pem -out ca-csr.pem -days 3650 -subj /CN=OpenVPN-CA/
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: ca-key.pem
+
+- name: Sign ca key
+  command: openssl x509 -req -in ca-csr.pem -out ca.crt -CAcreateserial -signkey ca-key.pem -sha256 -days 3650
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: ca.crt
+
+- name: Generate server key
+  command: openssl req -nodes -newkey rsa:{{ rsa_bits }} -keyout server.key -out server.csr -days 3650 -subj /CN=OpenVPN-Server/
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: server.key
+
+- name: Set server key permissions
+  file:
+    path: "{{ cert_dir }}/server.key"
+    owner: root
+    group: root
+    mode: 0400
+
+- name: Sign server key
+  command: openssl x509 -req -in server.csr -out server.crt -CA ca.crt -CAkey ca-key.pem -sha256 -days 3650 -CAcreateserial
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: server.crt
+
+- name: Generate dhparams
+  command: openssl dhparam -out {{ cert_dir }}/dh.pem {{ rsa_bits }}
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: dh.pem
+
+- name: Generate client key
+  command: "openssl req -nodes -newkey rsa:{{ rsa_bits }} -keyout client.key -out client.csr -days 3650 -subj /CN=OpenVPN-Client/"
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: "client.key"
+
+- name: Sign client key
+  command: openssl x509 -req -in client.csr -out client.crt -CA ca.crt -CAkey ca-key.pem -sha256 -days 3650
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: "client.crt"
+
+- name: Register server ca key
+  slurp:
+    src: "{{ cert_dir}}/ca.crt"
+  register: ca_cert
+
+- name: Register client cert
+  slurp:
+    src: "{{ cert_dir }}/client.crt"
+  register: client_cert
+
+- name: Register client key
+  slurp:
+    src: "{{ cert_dir }}/client.key"
+  register: client_key
+
+- name: Generate client config
+  template:
+    src: client.ovpn
+    dest: "{{ cert_dir }}/client.ovpn"
+    owner: root
+    group: root
+    mode: 0400
+
+- name: Fetch client config
+  fetch:
+    src: "{{ cert_dir }}/client.ovpn"
+    dest: "client/client.ovpn"
+    flat: yes

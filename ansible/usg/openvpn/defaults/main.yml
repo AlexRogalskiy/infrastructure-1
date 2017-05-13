@@ -1,0 +1,2 @@
+cert_dir: "/config/auth/keys"
+rsa_bits: 2048
