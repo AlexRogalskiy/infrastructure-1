@@ -32,5 +32,5 @@ abort()
 IMAGE_NAMES=("ubuntu")
 SEPARATED_IMAGE_NAMES=$(join_list_to_string ${IMAGE_NAMES[@]})
 
-APP_NAMES=("unifi" "plex" "proxy" "usg")
+APP_NAMES=("unifi" "plex" "proxy")
 SEPARATED_APP_NAMES=$(join_list_to_string ${APP_NAMES[@]})

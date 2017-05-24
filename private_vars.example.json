@@ -14,8 +14,5 @@
   "plex_email": "",
   "plex_password": "",
   "certbot_email": "",
-  "digitalocean_token": "",
-  "unifi_user": "",
-  "unifi_password": "",
-  "vpn_hostname": ""
+  "digitalocean_token": ""
 }
