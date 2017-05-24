@@ -30,6 +30,12 @@
     group: root
     mode: 0644
 
+- name: Enable plexupdate timer
+  systemd:
+    name: plexupdate.timer
+    state: started
+    enabled: True
+
 - name: Create plex media server path
   file:
     path: "{{ plex_path }}"
