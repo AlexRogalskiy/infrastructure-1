@@ -1,7 +1,8 @@
 private_vars.json
+private_vars_ansible.json
 packer_cache
 packer-*
 .vagrant
 *.retry
 *.log
-ansible/usg/client
+ansible/openvpn/client

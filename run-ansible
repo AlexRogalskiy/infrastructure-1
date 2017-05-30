@@ -4,6 +4,11 @@ set +x
 
 . ./common
 
+if [ ! -f ./private_vars_ansible.json ]; then
+  echo "Private vars file does not exist at ./private_vars_ansible.json. Please create it, see private_vars_ansible.example.json for reference"
+  exit 2
+fi
+
 display_error()
 {
     echo "Usage: "
@@ -23,7 +28,7 @@ if [ -n "$DEBUG" ]; then
 fi
 
 # Get the python from /usr/bin/env python to support virtualenvs
-ANSIBLE_SSH_PIPELINING=True ansible-playbook -i ansible/hosts ansible/${APP}/bootstrap.yml -e "@private_vars.json" $VERBOSE -e 'ansible_python_interpreter="/usr/bin/env python"'
+ANSIBLE_SSH_PIPELINING=True ansible-playbook -i ansible/hosts ansible/${APP}/bootstrap.yml -e "@private_vars.json" -e "@private_vars_ansible.json" $VERBOSE -e 'ansible_python_interpreter="/usr/bin/env python"'
 
 trap : 0
 echo >&2 'Done'

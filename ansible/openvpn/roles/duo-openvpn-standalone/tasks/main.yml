@@ -1,0 +1,29 @@
+---
+
+- name: Install build-essential
+  apt:
+    name: build-essential
+    state: latest
+
+- name: Setup go environment
+  copy:
+    src: go-path.sh
+    dest: /etc/profile.d
+
+- name: Get duo-openvpn-standalone
+  shell: source /etc/profile && go get github.com/DMarby/duo-openvpn-standalone
+  args:
+     executable: /bin/bash
+     creates: /opt/go/src/github.com/DMarby/duo-openvpn-standalone
+
+- name: Compile duo-openvpn-standalone
+  shell: source /etc/profile && make && make install
+  args:
+    chdir: "/opt/go/src/github.com/DMarby/duo-openvpn-standalone"
+    executable: /bin/bash
+    creates: /opt/go/src/github.com/DMarby/duo-openvpn-standalone/duo-openvpn-standalone.so
+
+- name: Create duo-openvpn-standalone config
+  template:
+    src: config
+    dest: /etc/duo-openvpn-standalone.yml

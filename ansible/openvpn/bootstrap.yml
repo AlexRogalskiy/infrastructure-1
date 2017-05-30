@@ -1,0 +1,28 @@
+---
+
+- name: Launch server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    vm_name: "openvpn"
+    vm_template: "ubuntu-template"
+    vm_type: "openvpn"
+
+  roles:
+    - ../roles/vcenter/launch_instance
+
+- name: Setup openvpn
+  hosts: instances
+  user: ubuntu
+  become: yes
+
+  vars:
+    set_go_path: no
+
+  roles:
+    - ../roles/expand_root
+    - ../roles/go
+    - duo-openvpn-standalone
+    - openvpn

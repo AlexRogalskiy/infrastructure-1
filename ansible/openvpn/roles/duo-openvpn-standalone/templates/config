@@ -1,0 +1,8 @@
+integration_key: {{ vpn_duo_integration_key }}
+secret_key: {{ vpn_duo_secret_key }}
+api_hostname: {{ vpn_duo_api_hostname }}
+users:
+{% for user in vpn_users %}
+  - username: {{ user.username }}
+    password: {{ user.bcrypt_password }}
+{% endfor %}

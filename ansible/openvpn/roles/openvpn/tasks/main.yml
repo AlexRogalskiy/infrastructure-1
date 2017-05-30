@@ -1,0 +1,146 @@
+---
+
+- name: Install openvpn
+  apt:
+    update_cache: yes
+    name: openvpn
+    state: latest
+
+- name: Ensure certificate directory exists
+  file:
+    path: "{{ cert_dir }}"
+    owner: root
+    group: root
+    state: directory
+
+- name: Generate ca key
+  command: openssl req -nodes -newkey rsa:{{ rsa_bits }} -keyout ca-key.pem -out ca-csr.pem -days 3650 -subj /CN=OpenVPN-CA/
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: ca-key.pem
+
+- name: Sign ca key
+  command: openssl x509 -req -in ca-csr.pem -out ca.crt -CAcreateserial -signkey ca-key.pem -sha256 -days 3650
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: ca.crt
+
+- name: Generate server key
+  command: openssl req -nodes -newkey rsa:{{ rsa_bits }} -keyout server.key -out server.csr -days 3650 -subj /CN=OpenVPN-Server/
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: server.key
+
+- name: Set server key permissions
+  file:
+    path: "{{ cert_dir }}/server.key"
+    owner: root
+    group: root
+    mode: 0400
+
+- name: Sign server key
+  command: openssl x509 -req -in server.csr -out server.crt -CA ca.crt -CAkey ca-key.pem -sha256 -days 3650 -CAcreateserial
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: server.crt
+
+- name: Generate dhparams
+  command: openssl dhparam -out {{ cert_dir }}/dh.pem {{ rsa_bits }}
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: dh.pem
+
+- name: Generate server tls-auth key
+  command: openvpn --genkey --secret {{ cert_dir }}/ta.key
+  args:
+    chdir: "{{ cert_dir }}"
+    creates: ta.key
+
+- name: Enable ip forwarding in sysctl
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Update default forward policy for UFW
+  lineinfile: dest=/etc/default/ufw regexp=^DEFAULT_FORWARD_POLICY line=DEFAULT_FORWARD_POLICY="ACCEPT"
+  notify: reload ufw
+
+- name: Enable UFW Ip forward
+  lineinfile: dest=/etc/ufw/sysctl.conf regexp=^net/ipv4/ip_forward line=net/ipv4/ip_forward=1
+  notify: reload ufw
+
+- name: Add nat rules to UFW
+  blockinfile:
+    dest: /etc/ufw/before.rules
+    insertbefore: BOF
+    block: |
+      # START OPENVPN RULES
+      # NAT table rules
+      *nat
+      :POSTROUTING ACCEPT [0:0]
+      -A POSTROUTING -s {{ vpn_ip_range }}/8 -o {{ ansible_default_ipv4.interface }} -j MASQUERADE
+      COMMIT
+      # END OPENVPN RULES
+  notify: reload ufw
+
+- name: Allow SSH in UFW
+  ufw:
+    rule: allow
+    port: ssh
+    proto: tcp
+
+- name: Allow OpenVPN in UFW
+  ufw:
+    rule: allow
+    port: 1194
+    proto: udp
+
+- name: Enable UFW
+  ufw:
+    logging: on
+    state: enabled
+
+- name: Register server ca key
+  slurp:
+    src: "{{ cert_dir }}/ca.crt"
+  register: ca_cert
+
+- name: Register server tls-auth key
+  slurp:
+    src: "{{ cert_dir }}/ta.key"
+  register: ta_key
+
+- name: Generate client config
+  template:
+    src: client
+    dest: "{{ cert_dir }}/client.ovpn"
+    owner: root
+    group: root
+    mode: 0400
+
+- name: Fetch client config
+  fetch:
+    src: "{{ cert_dir }}/client.ovpn"
+    dest: "client/client.ovpn"
+    flat: yes
+
+- name: Copy openvpn config
+  template:
+    src: server
+    dest: /etc/openvpn/server.conf
+
+- name: Copy systemd service
+  copy:
+    src: openvpn@server.service
+    dest: /etc/systemd/system/openvpn@server.service
+
+
+- name: Enable and start openvpn service
+  systemd:
+    name: openvpn@server
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
