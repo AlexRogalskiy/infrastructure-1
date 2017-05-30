@@ -13,6 +13,8 @@ tls-auth keys/ta.key
 plugin /opt/go/src/github.com/DMarby/duo-openvpn-standalone/duo-openvpn-standalone.so
 user nobody
 group nogroup
+push "route {{ vpn_ip_range_local }} 255.255.255.0"
+push "dhcp-option DOMAIN {{ vpn_hostname }}"
 
 persist-key
 persist-tun
@@ -21,9 +23,7 @@ cipher AES-256-CBC
 auth SHA256
 keysize 256
 comp-lzo
+reneg-sec 0
 
 log /var/log/openvpn.log
 status /var/log/openvpn-status.log
-
-
-verb 9

@@ -12,6 +12,7 @@ cipher AES-256-CBC
 auth SHA256
 keysize 256
 comp-lzo
+reneg-sec 0
 
 <ca>
 {{ ca_cert.content|b64decode }}
