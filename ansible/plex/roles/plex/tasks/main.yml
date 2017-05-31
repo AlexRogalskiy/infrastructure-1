@@ -32,9 +32,10 @@
 
 - name: Enable plexupdate timer
   systemd:
+    daemon_reload: yes
     name: plexupdate.timer
     state: started
-    enabled: True
+    enabled: yes
 
 - name: Create plex media server path
   file:

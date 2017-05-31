@@ -2,7 +2,7 @@
 Description=Run plexupdater daily
 
 [Timer]
-OnCalendar=daily
+OnCalendar=hourly
 Persistent=true
 
 [Install]
