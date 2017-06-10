@@ -16,6 +16,7 @@ group nogroup
 push 'route {{ vpn_ip_range_local }} 255.255.255.0'
 push 'dhcp-option DNS {{ vpn_local_dns }}'
 push 'dhcp-option DOMAIN {{ vpn_hostname }}'
+duplicate-cn
 
 persist-key
 persist-tun
