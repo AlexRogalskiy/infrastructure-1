@@ -1,0 +1,50 @@
+---
+
+- name: Launch server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    vm_name: "vyos"
+    vm_type: "vyos"
+    vm_networks:
+      - name: LAN
+      - name: WAN
+    vm_disk_size: 4
+    vm_num_cpus: 4
+    vm_disk:
+      - size_gb: "{{ vm_disk_size }}"
+        type: thin
+        datastore: "{{ vsphere_datastore }}"
+    vm_memory_mb: "1024"
+    vm_guest_id: otherLinux64Guest
+    vm_no_wait: yes
+
+  roles:
+    - vyos_ova
+    - ../roles/vcenter/launch_instance
+
+  post_tasks:
+    - pause:
+        minutes: 1
+      when: vcenter.changed
+
+- name: Setup vyos network
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    vm_name: "vyos"
+
+  roles:
+    - vyos_network
+
+# - name: Setup vyos
+#   hosts: instances
+#   user: ubuntu
+#   become: yes
+
+#   roles:
+#     - vyos

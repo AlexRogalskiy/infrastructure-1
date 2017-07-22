@@ -1,0 +1,32 @@
+---
+
+- name: Find vm
+  vmware_guest_facts:
+    hostname: "{{ vcenter_host }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    datacenter: "{{ vcenter_datacenter }}"
+    validate_certs: no
+    name: "{{ vm_name }}"
+  register: vcenter_lookup_vm
+  ignore_errors: yes
+
+- name: Download OVA
+  get_url:
+    url: http://packages.vyos.net/iso/release/1.1.7/vyos-1.1.7-amd64-signed.ova
+    dest: /tmp/vyos.ova
+    mode: 0440
+    checksum: sha256:3eeca84409a1158963cb02df436781a8f8e1087859936d4d076954a10ebe8654
+  when: vcenter_lookup_vm.instance is not defined
+
+- name: Import OVA and deploy vyos vm
+  command: "govc import.ova -name={{ vm_name }} /tmp/vyos.ova"
+  environment:
+    GOVC_HOST: "{{ vcenter_host }}"
+    GOVC_URL: "https://{{ vcenter_host }}/sdk"
+    GOVC_USERNAME: "{{ vcenter_username }}"
+    GOVC_PASSWORD: "{{ vcenter_password }}"
+    GOVC_INSECURE: "1"
+    GOVC_DATACENTER: "{{ vcenter_datacenter }}"
+    GOVC_DATASTORE: "{{ vcenter_datastore }}"
+  when: vcenter_lookup_vm.instance is not defined

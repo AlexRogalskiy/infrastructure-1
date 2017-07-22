@@ -60,7 +60,9 @@ To install ansible using brew, run:
 
 You also need to install some additional python modules, run:
 
-```pip install pyvmomi```
+```pip install pyvmomi ```
+
+You also need to install `govc` and add it to your path, releases can be found [here](https://github.com/vmware/govmomi/tree/master/govc).
 
 #### Usage
 To create a new vm and run ansible against it, run `./run-ansible <name-of-app>`
