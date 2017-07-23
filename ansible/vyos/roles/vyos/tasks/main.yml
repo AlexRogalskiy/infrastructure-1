@@ -1,4 +1,12 @@
 ---
 
-- debug:
-    msg: Lol
+- name: Update vyos configuration
+  vyos_config:
+    src: vyos.cfg
+    save: yes
+    backup: yes
+    provider:
+        host: "{{ inventory_hostname }}"
+        username: "{{ vyos_username }}"
+        ssh_keyfile: "{{ ssh_private_key_path }}"
+        port: "{{ vyos_port }}"

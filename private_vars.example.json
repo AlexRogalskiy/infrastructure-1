@@ -11,6 +11,7 @@
   "vsphere_type": "esx5",
   "vsphere_username": "",
   "ssh_public_key_path": "~/.ssh/id_rsa.pub",
+  "ssh_private_key_path": "~/.ssh/id_rsa",
   "storage_nfs_mount": "example.com:/share",
   "plex_email": "",
   "plex_password": "",

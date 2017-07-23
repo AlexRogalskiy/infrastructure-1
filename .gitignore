@@ -6,3 +6,4 @@ packer-*
 *.retry
 *.log
 ansible/openvpn/client
+ansible/vyos/roles/vyos/backup

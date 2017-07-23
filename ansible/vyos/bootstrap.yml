@@ -41,10 +41,14 @@
   roles:
     - vyos_network
 
-# - name: Setup vyos
-#   hosts: instances
-#   user: ubuntu
-#   become: yes
+- name: Configure vyos
+  hosts: instances
+  connection: local
+  gather_facts: false
 
-#   roles:
-#     - vyos
+  vars:
+    vyos_username: "vyos"
+    vyos_port: 22
+
+  roles:
+    - vyos
