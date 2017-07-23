@@ -14,10 +14,6 @@ set system login user vyos authentication public-keys {{ lookup('file', ssh_publ
 # Enable ssh
 set service ssh port '22'
 
-# Remove password for the vyos user
-delete system login user vyos authentication encrypted-password
-delete system login user vyos authentication plaintext-password
-
 # Disable password auth for ssh
 set service ssh disable-password-authentication
 
