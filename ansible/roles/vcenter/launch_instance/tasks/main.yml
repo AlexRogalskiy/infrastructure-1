@@ -65,4 +65,4 @@
     state=started
     host={{ instance.ipv4 }}
     port=22
-  when: instance is defined and not vm_no_wait
+  when: instance is defined and vm_no_wait is not defined
