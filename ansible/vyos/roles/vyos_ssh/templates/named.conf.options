@@ -1,0 +1,11 @@
+options {
+	directory "/var/cache/bind";
+
+  forwarders {
+    8.8.8.8;
+    8.8.4.4;
+  };
+
+	auth-nxdomain no;    # conform to RFC1035
+	listen-on-v6 { any; };
+};

@@ -1,0 +1,9 @@
+zone "home.dmarby.se" {
+  type master;
+  file "/etc/bind/home.dmarby.se";
+};
+
+zone "0.0.10.in-addr.arpa" {
+  type master;
+  file "/etc/bind/db.10";
+};

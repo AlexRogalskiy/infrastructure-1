@@ -1,0 +1,41 @@
+---
+
+- name: Ignore expired apt release file
+  copy:
+    dest: /etc/apt/apt.conf.d/10no--check-valid-until
+    content: Acquire::Check-Valid-Until "0";
+    owner: root
+    group: root
+
+- name: Install DNS server
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - bind9
+    - dnsutils
+
+- name: Add bind local conf
+  template:
+    src: named.conf.local
+    dest: /etc/bind/named.conf.local
+  notify: restart bind
+
+- name: Add bind options
+  template:
+    src: named.conf.options
+    dest: /etc/bind/named.conf.options
+  notify: restart bind
+
+- name: Add home.dmarby.se zone
+  template:
+    src: home.dmarby.se
+    dest: /etc/bind/home.dmarby.se
+  notify: restart bind
+
+- name: Add reverse zone
+  template:
+    src: reverse
+    dest: /etc/bind/db.10
+  notify: restart bind
