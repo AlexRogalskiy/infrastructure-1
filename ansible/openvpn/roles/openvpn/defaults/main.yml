@@ -1,5 +1,5 @@
 vpn_ip_range: 10.8.0.0
-vpn_ip_range_local: 10.0.1.0
-vpn_local_dns: 10.0.1.1
+vpn_ip_range_local: 10.0.0.0
+vpn_local_dns: 10.0.0.1
 rsa_bits: 2048
 cert_dir: /etc/openvpn/keys
