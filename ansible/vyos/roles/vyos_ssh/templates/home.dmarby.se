@@ -1,6 +1,6 @@
 $TTL 60
 @	IN	SOA	home.dmarby.se. hostmaster.dmarby.se. (
-			      3		; Serial
+			      4		; Serial
 			 604800		; Refresh
 			  86400		; Retry
 			2419200		; Expire
@@ -8,6 +8,8 @@ $TTL 60
 ;
 @       IN      NS      ns.
 ns      IN      A       10.0.0.1
+
+mini.home.dmarby.se. 60 IN A 10.0.0.21
 
 storage.home.dmarby.se. 60 IN A 10.0.0.4
 vcenter.home.dmarby.se. 60 IN A 10.0.0.5

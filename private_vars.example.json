@@ -5,6 +5,7 @@
   "vcenter_host": "",
   "vcenter_password": "",
   "vcenter_username": "",
+  "vcenter_site_name": "",
   "vsphere_datastore": "",
   "vsphere_host": "",
   "vsphere_password": "",
@@ -16,5 +17,6 @@
   "plex_email": "",
   "plex_password": "",
   "certbot_email": "",
-  "digitalocean_token": ""
+  "digitalocean_token": "",
+  "vcsa_path": "~/vcsa"
 }

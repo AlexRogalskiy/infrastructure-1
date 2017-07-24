@@ -66,5 +66,8 @@ To communicate with vCenter/vSphere, ansible needs some additional python module
 # OVA/OVF
 In order to deploy OVA/OVFs (required for VyOS) you'll need install `govc` and add it to your path, releases can be found [here](https://github.com/vmware/govmomi/tree/master/govc).
 
+# VCSA
+To deploy VCSA, you'll need to download the VCSA .iso, extract it, and specify the path to it in `private_vars.json`.
+
 #### Usage
 To create a new vm and run ansible against it, run `./run-ansible <name-of-app>`
