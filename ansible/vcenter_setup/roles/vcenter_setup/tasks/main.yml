@@ -1,0 +1,19 @@
+---
+
+- name: Create temporary file
+  tempfile:
+    state: file
+    suffix: temp
+  register: temp_file
+
+- name: Copy vcsa template
+  template:
+    src: vcsa.json
+    dest: "{{ temp_file.path }}"
+
+- name: Run VCSA deployment
+  expect:
+    command: "/bin/bash {{ vcsa_path }}/vcsa-cli-installer/mac/vcsa-deploy install -v {{ temp_file.path }} --accept-eula"
+    responses:
+      (?i)thumbprint: '1'
+    timeout: 10800

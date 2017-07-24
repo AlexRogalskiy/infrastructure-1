@@ -1,0 +1,9 @@
+---
+
+- name: Deploy vCenter
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  roles:
+    - vcenter_setup
