@@ -16,6 +16,11 @@
     - bind9
     - dnsutils
 
+- name: Add script for making dns work on boot
+  copy:
+    src: start_dns.sh
+    dest: /config/scripts/vyatta-postconfig-bootup.script
+
 - name: Add bind local conf
   template:
     src: named.conf.local
