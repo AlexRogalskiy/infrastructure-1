@@ -43,8 +43,8 @@
     - vyos_network
 
 - name: Configure vyos
-  hosts: localhost
-  connection: local
+  hosts: instances
+  user: vyos
   gather_facts: false
 
   vars:

@@ -1,7 +1,8 @@
 ---
 
 - name: Update vyos configuration
-  vyos_config:
+  local_action:
+    module: vyos_config
     src: vyos.cfg
     save: yes
     backup: yes

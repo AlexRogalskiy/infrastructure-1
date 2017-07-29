@@ -62,7 +62,7 @@
   when: vcenter_lookup_vm.instance is defined
 
 - name: Add instances host to inventory
-  action: add_host hostname={{ instance.ipv4 }} groupname=instances
+  action: add_host hostname={{ instance["hw_" + instance.hw_interfaces[0]].ipaddresses[0] }} groupname=instances
   when: instance is defined
 
 - name: Wait for instances to become available
