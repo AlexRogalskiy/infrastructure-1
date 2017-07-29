@@ -6,7 +6,6 @@
   "vcenter_password": "",
   "vcenter_username": "",
   "vcenter_site_name": "",
-  "vsphere_datastore": "",
   "ssh_public_key_path": "~/.ssh/id_rsa.pub",
   "ssh_private_key_path": "~/.ssh/id_rsa",
   "storage_nfs_mount": "example.com:/share",
@@ -14,5 +13,9 @@
   "plex_password": "",
   "certbot_email": "",
   "digitalocean_token": "",
-  "vcsa_path": "~/vcsa"
+  "vcsa_path": "~/vcsa",
+  "packer_vsphere_host": "",
+  "packer_vsphere_username": "",
+  "packer_vsphere_password": "",
+  "packer_vsphere_datastore": ""
 }

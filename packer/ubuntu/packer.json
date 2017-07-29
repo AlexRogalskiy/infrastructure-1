@@ -45,10 +45,10 @@
       "shutdown_command": "sudo systemctl poweroff",
 
       "remote_type": "esx5",
-      "remote_host": "{{user `vsphere_host`}}",
-      "remote_datastore": "{{user `vsphere_datastore`}}",
-      "remote_username": "{{user `vsphere_username`}}",
-      "remote_password": "{{user `vsphere_password`}}",
+      "remote_host": "{{user `packer_vsphere_host`}}",
+      "remote_datastore": "{{user `packer_vsphere_datastore`}}",
+      "remote_username": "{{user `packer_vsphere_username`}}",
+      "remote_password": "{{user `packer_vsphere_password`}}",
 
       "vmx_data": {
         "memsize": "4096",
@@ -92,11 +92,10 @@
     "vcenter_host": "",
     "vcenter_password": "",
     "vcenter_username": "",
-    "vsphere_datastore": "",
-    "vsphere_host": "",
-    "vsphere_password": "",
-    "vsphere_type": "esx5",
-    "vsphere_username": "",
+    "packer_vsphere_datastore": "",
+    "packer_vsphere_host": "",
+    "packer_vsphere_password": "",
+    "packer_vsphere_username": "",
     "ssh_public_key_path": "~/.ssh/id_rsa.pub"
   }
 }
