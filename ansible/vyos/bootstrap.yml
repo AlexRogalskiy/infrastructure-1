@@ -20,6 +20,7 @@
     vm_memory_mb: "1024"
     vm_guest_id: debian6_64Guest
     vm_no_wait: yes
+    esxi_host: esxi
 
   roles:
     - vyos_ova

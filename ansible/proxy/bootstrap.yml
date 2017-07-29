@@ -9,6 +9,7 @@
     vm_name: "proxy"
     vm_template: "ubuntu-template"
     vm_type: "proxy"
+    esxi_host: esxi
 
   roles:
     - ../roles/vcenter/launch_instance

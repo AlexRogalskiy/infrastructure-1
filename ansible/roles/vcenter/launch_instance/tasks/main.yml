@@ -1,5 +1,10 @@
 ---
 
+- name: Register vsphere host
+  set_fact:
+    vsphere_host: "{{ esxi_hosts[esxi_host].host }}"
+    vsphere_datastore: "{{ esxi_hosts[esxi_host].datastore }}"
+
 - name: Create the VM
   fixed_vmware_guest:
     hostname: "{{ vcenter_host }}"

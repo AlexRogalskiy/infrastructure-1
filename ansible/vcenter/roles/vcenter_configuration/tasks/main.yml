@@ -18,7 +18,7 @@
     password: "{{ vcenter_password }}"
     datacenter_name: "{{ vcenter_datacenter }}"
     cluster_name: "{{ vcenter_cluster }}"
-    enable_ha: True
+    enable_ha: no
     state: present
     validate_certs: no
 
@@ -30,19 +30,19 @@
     password: "{{ vcenter_password }}"
     datacenter_name: "{{ vcenter_datacenter }}"
     cluster_name: "{{ vcenter_cluster }}"
-    esxi_hostname: "{{ item.host }}"
-    esxi_username: "{{ item.username }}"
-    esxi_password: "{{ item.password }}"
+    esxi_hostname: "{{ item.value.host }}"
+    esxi_username: "{{ item.value.username }}"
+    esxi_password: "{{ item.value.password }}"
     state: present
     validate_certs: no
-  with_items: "{{ esxi_hosts }}"
+  with_dict: "{{ esxi_hosts }}"
 
 - name: Configure vSwitch
   local_action:
     module: fixed_vmware_vswitch
-    hostname: "{{ item.host }}"
-    username: "{{ item.username }}"
-    password: "{{ item.password }}"
+    hostname: "{{ item.value.host }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
     switch_name: vSwitch0
     nic_name:
       - vmnic0
@@ -50,52 +50,52 @@
     mtu: 1500
     state: present
     validate_certs: no
-  with_items: "{{ esxi_hosts }}"
+  with_dict: "{{ esxi_hosts }}"
 
 - name: Configure management portgroup
   local_action:
     module: fixed_vmware_portgroup
-    hostname: "{{ item.host }}"
-    username: "{{ item.username }}"
-    password: "{{ item.password }}"
+    hostname: "{{ item.value.host }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
     switch_name: vSwitch0
     portgroup_name: Management Network
     vlan_id: 10
     validate_certs: no
-  with_items: "{{ esxi_hosts }}"
+  with_dict: "{{ esxi_hosts }}"
 
 - name: Configure vm portgroup
   local_action:
     module: fixed_vmware_portgroup
-    hostname: "{{ item.host }}"
-    username: "{{ item.username }}"
-    password: "{{ item.password }}"
+    hostname: "{{ item.value.host }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
     switch_name: vSwitch0
     portgroup_name: VM Network
     vlan_id: 10
     validate_certs: no
-  with_items: "{{ esxi_hosts }}"
+  with_dict: "{{ esxi_hosts }}"
 
 - name: Configure lan portgroup
   local_action:
     module: fixed_vmware_portgroup
-    hostname: "{{ item.host }}"
-    username: "{{ item.username }}"
-    password: "{{ item.password }}"
+    hostname: "{{ item.value.host }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
     switch_name: vSwitch0
     portgroup_name: LAN
     vlan_id: 4095
     validate_certs: no
-  with_items: "{{ esxi_hosts }}"
+  with_dict: "{{ esxi_hosts }}"
 
 - name: Configure wan portgroup
   local_action:
     module: fixed_vmware_portgroup
-    hostname: "{{ item.host }}"
-    username: "{{ item.username }}"
-    password: "{{ item.password }}"
+    hostname: "{{ item.value.host }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
     switch_name: vSwitch0
     portgroup_name: WAN
     vlan_id: 5
     validate_certs: no
-  with_items: "{{ esxi_hosts }}"
+  with_dict: "{{ esxi_hosts }}"

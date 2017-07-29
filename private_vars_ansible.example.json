@@ -9,11 +9,12 @@
       "bcrypt_password": "$2a$10$uXDHPMw9NrPWeFw8XFeHdeuc3NqwjF0khL1l5bUHptzI.pCdE2ISa"
     }
   ],
-  "esxi_hosts": [
-    {
+  "esxi_hosts": {
+    "name": {
       "host": "",
       "username": "",
-      "password": ""
+      "password": "",
+      "datastore": ""
     }
-  ]
+  }
 }

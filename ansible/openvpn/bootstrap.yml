@@ -9,6 +9,7 @@
     vm_name: "openvpn"
     vm_template: "ubuntu-template"
     vm_type: "openvpn"
+    esxi_host: esxi
 
   roles:
     - ../roles/vcenter/launch_instance
