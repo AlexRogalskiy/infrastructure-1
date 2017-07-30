@@ -15,7 +15,7 @@
     datacenter: "{{ vcenter_datacenter }}"
     state: "present"
     name: "{{ vm_name }}"
-    guest_id: "{{ vm_guest_id|default('ubuntu64Guest') }}"
+    guest_id: "{{ vm_guest_id|default(omit) }}"
     disk: "{{ vm_disk }}"
     hardware:
       memory_mb: "{{ vm_memory_mb|default(512) }}"
@@ -23,7 +23,7 @@
       scsi: paravirtual
     networks: "{{ vm_networks }}"
     template: "{{ vm_template|default(omit) }}"
-    wait_for_ip_address: yes
+    wait_for_ip_address: "{{ vm_wait_for_ip|default(yes) }}"
     customization:
       hostname: "{{ vm_name }}"
   register: vcenter
@@ -63,7 +63,11 @@
 
 - name: Add instances host to inventory
   action: add_host hostname={{ instance["hw_" + instance.hw_interfaces[0]].ipaddresses[0] }} groupname=instances
-  when: instance is defined
+  when: instance is defined and instance.hw_interfaces.0 is defined and instance["hw_" + instance.hw_interfaces[0]].ipaddresses.0 is defined
+
+- name: Add instances host to inventory
+  action: add_host hostname={{ instance.ipv4 }} groupname=instances
+  when: instance is defined and instance.hw_interfaces.0 is defined and instance["hw_" + instance.hw_interfaces[0]].ipaddresses.0 is not defined
 
 - name: Wait for instances to become available
   wait_for:

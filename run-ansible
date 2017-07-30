@@ -25,7 +25,10 @@ fi
 # Convert debug environment variable to something that ansible understands
 if [ -n "$DEBUG" ]; then
     VERBOSE="-vvvv"
+    export ANSIBLE_LOG_PATH=${PWD}/ansible.log
 fi
+
+export ANSIBLE_PARAMIKO_HOST_KEY_AUTO_ADD=True
 
 # Get the python from /usr/bin/env python to support virtualenvs
 ANSIBLE_SSH_PIPELINING=True ansible-playbook -i ansible/hosts ansible/${APP}/bootstrap.yml -e "@private_vars.json" -e "@private_vars_ansible.json" $VERBOSE -e 'ansible_python_interpreter="/usr/bin/env python"'

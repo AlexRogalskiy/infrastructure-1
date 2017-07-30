@@ -1,6 +1,5 @@
 {
   "variables": {
-    "product_version": "1.2.0-beta1",
     "iso_path": "http://dev.packages.vyos.net/iso/current/amd64/vyos-999.201707291034-amd64.iso",
     "iso_checksum_value": "8b46ecdc33c9450c3655eb6a14e35524ee509dd6",
     "vcenter_datacenter": "",
@@ -37,7 +36,6 @@
       "iso_url": "{{user `iso_path`}}",
       "iso_checksum": "{{user `iso_checksum_value`}}",
       "iso_checksum_type": "sha1",
-      "shutdown_command": "echo 'halt -p' > /tmp/shutdown.sh; echo 'vyos'|sudo -S sh '/tmp/shutdown.sh'",
 
       "boot_command": [
         "<enter><wait10><wait10><wait10>",
@@ -115,18 +113,18 @@
       },
 
       "format": "ovf",
-      "ovftool_options": ["--noImageFiles"]
+      "ovftool_options": ["--noImageFiles"],
+      "vmx_remove_ethernet_interfaces": true
     }
   ],
   "provisioners": [
     {
       "scripts": [
         "packer/vyos/scripts/base.sh",
-        "packer/vyos/scripts/vmware.sh",
-        "packer/vyos/scripts/cleanup.sh",
-        "packer/vyos/scripts/zerodisk.sh"
+        "packer/vyos/scripts/cleanup.sh"
       ],
-      "type": "shell"
+      "type": "shell",
+      "skip_clean": true
     }
   ],
   "post-processors": [
@@ -140,8 +138,8 @@
       "datacenter": "{{user `vcenter_datacenter`}}",
       "datastore": "{{user `vcenter_datastore`}}",
 
-      "os_type": "debian8_64Guest",
-      "os_id": "96",
+      "os_type": "other26xLinux64Guest",
+      "os_id": "1",
 
       "vm_name": "{{ build_name }}-template"
     }

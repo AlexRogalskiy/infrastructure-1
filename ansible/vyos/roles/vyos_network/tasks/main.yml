@@ -15,6 +15,7 @@
     vm_shell_args: "'{{ lookup('template', 'network_setup.sh') }}' > ./network_setup && chmod +x network_setup"
     vm_shell_cwd: "/tmp"
   ignore_errors: yes
+  register: vyos_network
 
 - name: Run configuration script
   local_action:
@@ -31,3 +32,4 @@
     vm_shell_args: "network_setup"
     vm_shell_cwd: "/tmp"
   ignore_errors: yes
+  register: vyos_network

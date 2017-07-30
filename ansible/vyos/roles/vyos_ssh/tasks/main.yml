@@ -1,12 +1,5 @@
 ---
 
-- name: Ignore expired apt release file
-  copy:
-    dest: /etc/apt/apt.conf.d/10no--check-valid-until
-    content: Acquire::Check-Valid-Until "0";
-    owner: root
-    group: root
-
 - name: Install DNS server
   apt:
     name: "{{ item }}"

@@ -1,0 +1,22 @@
+client
+dev tun
+remote {{ vpn_hostname }} 1194 udp
+auth-user-pass
+nobind
+
+persist-key
+persist-tun
+tls-version-min 1.2
+tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-128-CBC-SHA256:TLS-DHE-RSA-WITH-AES-256-CBC-SHA:TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA
+cipher AES-256-CBC
+auth SHA256
+keysize 256
+comp-lzo
+reneg-sec 0
+
+<ca>
+{{ ca_cert.content|b64decode }}
+</ca>
+<tls-auth>
+{{ ta_key.content|b64decode }}
+</tls-auth>

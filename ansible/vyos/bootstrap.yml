@@ -10,20 +10,21 @@
     vm_type: "vyos"
     vm_networks:
       - name: LAN
+        device_type: vmxnet3
+        type: dhcp
       - name: WAN
-    vm_disk_size: 4
+        device_type: vmxnet3
+        type: dhcp
+        mac: 00:50:56:a7:5e:6f
+
     vm_num_cpus: 4
-    vm_disk:
-      - size_gb: "{{ vm_disk_size }}"
-        type: thin
-        datastore: "{{ vsphere_datastore }}"
-    vm_memory_mb: "1024"
-    vm_guest_id: debian6_64Guest
+    vm_memory_mb: "2048"
     vm_no_wait: yes
+    vm_wait_for_ip: no
     esxi_host: esxi
+    vm_template: "vyos-template"
 
   roles:
-    - vyos_ova
     - ../roles/vcenter/launch_instance
 
   post_tasks:
@@ -42,14 +43,15 @@
   roles:
     - vyos_network
 
+  post_tasks:
+    - pause:
+        minutes: 1
+      when: vyos_network.changed
+
 - name: Configure vyos
   hosts: instances
   user: vyos
   gather_facts: false
-
-  vars:
-    vyos_username: "vyos"
-    vyos_port: 22
 
   roles:
     - vyos
@@ -59,5 +61,22 @@
   user: vyos
   become: yes
 
+  vars_files:
+    - vars.yml
+
   roles:
     - vyos_ssh
+    - ../roles/go
+    - duo-openvpn-standalone
+    - vyos_openvpn_ssh
+
+- name: Configure vyos openvpn
+  hosts: instances
+  user: vyos
+  gather_facts: false
+
+  vars_files:
+    - vars.yml
+
+  roles:
+    - vyos_openvpn

@@ -1,9 +1,9 @@
 ---
 
-- name: Update vyos configuration
+- name: Update openvpn vyos configuration
   local_action:
     module: vyos_config
-    src: vyos.cfg
+    src: openvpn.cfg
     save: yes
     backup: yes
     provider:
