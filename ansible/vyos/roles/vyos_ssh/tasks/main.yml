@@ -9,10 +9,28 @@
     - bind9
     - dnsutils
 
-- name: Add script for making dns work on boot
+- name: Prevent dnsmasq from starting
+  systemd:
+    name: dnsmasq
+    enabled: no
+    masked: yes
+    state: stopped
+
+- name: Override bind startup
+  file:
+    path: /etc/systemd/system/bind9.service.d
+    state: directory
+
+- name: Override bind startup
   copy:
-    src: start_dns.sh
-    dest: /config/scripts/vyatta-postconfig-bootup.script
+    src: bind9_startup.conf
+    dest: /etc/systemd/system/bind9.service.d/10-bind9_startup.conf
+
+- name: Enable bind9
+  systemd:
+    name: bind9
+    daemon_reload: yes
+    enabled: yes
 
 - name: Add bind local conf
   template:

@@ -43,11 +43,6 @@
   roles:
     - vyos_network
 
-  post_tasks:
-    - pause:
-        minutes: 1
-      when: vyos_network.changed
-
 - name: Configure vyos
   hosts: instances
   user: vyos
