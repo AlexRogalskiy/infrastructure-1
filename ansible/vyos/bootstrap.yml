@@ -41,7 +41,8 @@
     vm_name: "vyos"
 
   roles:
-    - vyos_network
+    - name: vyos_network
+      when: vcenter.changed
 
 - name: Configure vyos
   hosts: instances

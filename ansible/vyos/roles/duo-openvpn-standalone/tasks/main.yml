@@ -20,12 +20,14 @@
     dest: "/opt/go/src/github.com/DMarby/duo-openvpn-standalone"
     clone: yes
     update: yes
+  register: git
 
 - name: Compile duo-openvpn-standalone
-  shell: source /etc/profile && make && make install
+  shell: source /etc/profile && make && make intermediary && make install
   args:
     chdir: "/opt/go/src/github.com/DMarby/duo-openvpn-standalone"
     executable: /bin/bash
+  when: git.changed
 
 - name: Create duo-openvpn-standalone config
   template:
