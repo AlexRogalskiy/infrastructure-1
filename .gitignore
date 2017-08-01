@@ -5,6 +5,6 @@ packer-*
 .vagrant
 *.retry
 *.log
-ansible/vyos/client
+openvpn
 backup
 ansible.log

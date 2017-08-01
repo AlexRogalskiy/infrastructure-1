@@ -41,7 +41,7 @@
     vm_name: "vyos"
 
   roles:
-    - name: vyos_network
+    - name: ../roles/vyos/vyos_network
       when: vcenter.changed
 
 - name: Configure vyos
@@ -50,7 +50,8 @@
   gather_facts: false
 
   roles:
-    - vyos
+    - ../roles/vyos/vyos_base_configuration
+    - vyos_configuration
 
 - name: Run tasks against vyos
   hosts: instances
@@ -58,13 +59,16 @@
   become: yes
 
   vars_files:
-    - vars.yml
+    - ../vars/vyos.yml
+
+  vars:
+    generate_vpn_keys: yes
 
   roles:
-    - vyos_ssh
+    - ../roles/vyos/vyos_ssh
     - ../roles/go
-    - duo-openvpn-standalone
-    - vyos_openvpn_ssh
+    - ../roles/vyos/duo-openvpn-standalone
+    - ../roles/vyos/vyos_openvpn_ssh
 
 - name: Configure vyos openvpn
   hosts: instances
@@ -72,7 +76,7 @@
   gather_facts: false
 
   vars_files:
-    - vars.yml
+    - ../vars/vyos.yml
 
   roles:
-    - vyos_openvpn
+    - ../roles/vyos/vyos_openvpn

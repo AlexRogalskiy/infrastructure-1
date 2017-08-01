@@ -1,0 +1,13 @@
+---
+
+- name: Update vyos configuration
+  local_action:
+    module: vyos_config
+    src: vyos.cfg
+    save: yes
+    backup: yes
+    provider:
+      host: "{{ inventory_hostname }}"
+      username: "vyos"
+      ssh_keyfile: "{{ ssh_private_key_path }}"
+      port: 22
