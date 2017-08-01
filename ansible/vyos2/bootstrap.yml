@@ -6,7 +6,7 @@
   gather_facts: false
 
   vars:
-    vm_name: "vyos"
+    vm_name: "vyos2"
     vm_type: "vyos"
     vm_networks:
       - name: LAN
@@ -21,7 +21,7 @@
     vm_memory_mb: "2048"
     vm_no_wait: yes
     vm_wait_for_ip: no
-    esxi_host: esxi
+    esxi_host: esxi2
     vm_template: "vyos-template"
 
   roles:
@@ -38,8 +38,8 @@
   gather_facts: false
 
   vars:
-    vm_name: "vyos"
-    router_ip: "10.0.0.2/24"
+    vm_name: "vyos2"
+    router_ip: "10.0.0.3/24"
 
   roles:
     - name: ../roles/vyos/vyos_network
@@ -63,7 +63,7 @@
     - ../vars/vyos.yml
 
   vars:
-    generate_vpn_keys: yes
+    generate_vpn_keys: no
 
   roles:
     - ../roles/vyos/vyos_ssh

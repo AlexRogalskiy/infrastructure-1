@@ -4,3 +4,6 @@
   service:
     name: bind9
     state: restarted
+
+- name: reload systemd
+  shell: systemctl daemon-reload

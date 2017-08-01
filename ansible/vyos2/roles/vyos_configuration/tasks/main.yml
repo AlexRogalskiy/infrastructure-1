@@ -1,16 +1,6 @@
 ---
 
-- name: Copy scripts
-  become: yes
-  copy:
-    src: "{{ item }}"
-    dest: "/config/scripts/{{ item }}"
-    mode: a+rx
-  with_items:
-    - backup.sh
-    - master.sh
-
-- name: Update vyos base configuration
+- name: Update vyos configuration
   local_action:
     module: vyos_config
     src: vyos.cfg

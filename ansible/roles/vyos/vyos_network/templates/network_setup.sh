@@ -3,8 +3,7 @@ source /opt/vyatta/etc/functions/script-template
 
 configure
 
-# Assume that there is an existing dhcp server running, this is just to allow SSH access
-set interfaces ethernet eth0 address dhcp
+set interfaces ethernet eth0 address '{{ router_ip }}'
 set interfaces ethernet eth0 description 'LAN'
 
 # Set up publickey authentication for the vyos user

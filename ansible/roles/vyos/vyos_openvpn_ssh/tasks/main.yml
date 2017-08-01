@@ -14,7 +14,7 @@
 
 - name: Copy server keys
   copy:
-    src: ../../openvpn/server
+    src: ../../openvpn/server/
     dest: /config/auth/openvpn
   when: not generate_vpn_keys
 
@@ -71,11 +71,13 @@
   slurp:
     src: "{{ cert_dir }}/ca.crt"
   register: ca_cert
+  when: generate_vpn_keys
 
 - name: Register server tls-auth key
   slurp:
     src: "{{ cert_dir }}/ta.key"
   register: ta_key
+  when: generate_vpn_keys
 
 - name: Generate client config
   template:
@@ -84,12 +86,14 @@
     owner: root
     group: root
     mode: 0400
+  when: generate_vpn_keys
 
 - name: Fetch client config
   fetch:
     src: "{{ cert_dir }}/client.ovpn"
     dest: "../../openvpn/client/client.ovpn"
     flat: yes
+  when: generate_vpn_keys
 
 - name: Fetch server keys
   fetch:
@@ -101,4 +105,5 @@
     - /config/auth/openvpn/server.crt
     - /config/auth/openvpn/dh.pem
     - /config/auth/openvpn/ta.key
+    - /config/auth/openvpn/server.key
   when: generate_vpn_keys
