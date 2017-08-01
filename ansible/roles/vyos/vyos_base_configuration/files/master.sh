@@ -27,6 +27,10 @@ sudo service bind9 restart
 # Restart OpenVPN
 set interfaces openvpn vtun0 disable
 commit
+until ping -c1 www.google.com &>/dev/null
+do
+  sleep 5
+done
 delete interfaces openvpn vtun0 disable
 commit
 
