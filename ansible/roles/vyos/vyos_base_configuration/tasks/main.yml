@@ -10,6 +10,15 @@
     - backup.sh
     - master.sh
 
+- name: Copy template scripts
+  become: yes
+  template:
+    src: "{{ item }}"
+    dest: "/config/scripts/{{ item }}"
+    mode: a+rx
+  with_items:
+    - dynamic_dns.sh
+
 - name: Update vyos base configuration
   local_action:
     module: vyos_config
