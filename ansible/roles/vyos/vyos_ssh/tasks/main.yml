@@ -34,26 +34,24 @@
     daemon_reload: yes
     enabled: yes
 
-- name: Add bind local conf
+- name: Add configs
   template:
-    src: named.conf.local
-    dest: /etc/bind/named.conf.local
+    src: "{{ item }}"
+    dest: "/etc/bind/{{ item }}"
+    owner: bind
+    group: bind
   notify: restart bind
+  with_items:
+    - named.conf.local
+    - named.conf.options
+    - home.dmarby.se
+    - db.10
 
-- name: Add bind options
-  template:
-    src: named.conf.options
-    dest: /etc/bind/named.conf.options
-  notify: restart bind
-
-- name: Add home.dmarby.se zone
-  template:
-    src: home.dmarby.se
-    dest: /etc/bind/home.dmarby.se
-  notify: restart bind
-
-- name: Add reverse zone
-  template:
-    src: reverse
-    dest: /etc/bind/db.10
+- name: Fix bind permissions
+  file:
+    path: /etc/bind
+    owner: bind
+    group: bind
+    state: directory
+    recurse: yes
   notify: restart bind
