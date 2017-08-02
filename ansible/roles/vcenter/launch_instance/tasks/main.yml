@@ -23,7 +23,7 @@
       scsi: paravirtual
     networks: "{{ vm_networks }}"
     template: "{{ vm_template|default(omit) }}"
-    wait_for_ip_address: "{{ vm_wait_for_ip|default(yes) }}"
+    wait_for_ip_address: "{{ vm_wait_for_ip|default('yes') }}"
     customization:
       hostname: "{{ vm_name }}"
   register: vcenter

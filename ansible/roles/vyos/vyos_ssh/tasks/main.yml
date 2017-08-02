@@ -45,7 +45,12 @@
     - named.conf.local
     - named.conf.options
     - home.dmarby.se
+    - dhcp.home.dmarby.se
     - db.10
+
+- name: Clean journals
+  shell: rm -rf /etc/bind/*.jnl
+  notify: restart bind
 
 - name: Fix bind permissions
   file:
