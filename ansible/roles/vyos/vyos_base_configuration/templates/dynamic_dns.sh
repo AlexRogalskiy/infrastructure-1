@@ -6,7 +6,7 @@ run show interfaces ethernet eth1 brief | grep u/u
 
 if [ $? == 0 ]
 then
-  IP="$(run show interfaces ethernet eth1 | grep "inet " | awk -F ' ' '{print $4}')"
+  IP="$(run show interfaces ethernet eth1 | grep "inet " | awk -F ' ' '{print $2}' | awk -F '/' '{print $1}')"
 
   (
   echo "server 127.0.0.1"
