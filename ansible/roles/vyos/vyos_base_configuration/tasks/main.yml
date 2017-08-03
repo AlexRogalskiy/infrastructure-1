@@ -19,6 +19,11 @@
   with_items:
     - dynamic_dns.sh
 
+- name: Copy server keys
+  copy:
+    src: ../../openvpn-client/
+    dest: /config/auth/openvpn-client
+
 - name: Update vyos base configuration
   local_action:
     module: vyos_config

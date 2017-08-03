@@ -8,3 +8,4 @@ packer-*
 openvpn
 backup
 ansible.log
+openvpn-client

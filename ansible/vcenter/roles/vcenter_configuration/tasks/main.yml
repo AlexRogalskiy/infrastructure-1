@@ -99,3 +99,15 @@
     vlan_id: 5
     validate_certs: no
   with_dict: "{{ esxi_hosts }}"
+
+- name: Configure vpn portgroup
+  local_action:
+    module: fixed_vmware_portgroup
+    hostname: "{{ item.value.host }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    switch_name: vSwitch0
+    portgroup_name: VPN
+    vlan_id: 20
+    validate_certs: no
+  with_dict: "{{ esxi_hosts }}"
