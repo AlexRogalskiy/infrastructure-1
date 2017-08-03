@@ -16,6 +16,13 @@
     masked: yes
     state: stopped
 
+- name: Prevent keepalived from starting
+  systemd:
+    name: keepalived
+    enabled: no
+    masked: yes
+    state: stopped
+
 - name: Override bind startup
   file:
     path: /etc/systemd/system/bind9.service.d
