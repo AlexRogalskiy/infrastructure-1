@@ -16,5 +16,17 @@
       "password": "",
       "datastore": ""
     }
+  },
+  "transmission_username": "",
+  "transmission_password": "",
+  "nzbget": {
+    "username": "",
+    "password": "",
+    "server": {
+      "host": "",
+      "port": "",
+      "username": "",
+      "password": ""
+    }
   }
 }

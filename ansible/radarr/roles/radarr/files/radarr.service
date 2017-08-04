@@ -1,0 +1,19 @@
+[Unit]
+Description=Radarr Daemon
+After=syslog.target network.target
+
+[Service]
+User=radarr
+Group=radarr
+
+Type=simple
+PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p /home/radarr/.config/Radarr
+ExecStartPre=/bin/chown radarr:radarr -R /home/radarr/.config/Radarr
+ExecStart=/usr/bin/mono /opt/radarr/Radarr.exe -nobrowser
+TimeoutStopSec=20
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

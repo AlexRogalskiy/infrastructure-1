@@ -1,0 +1,9 @@
+---
+
+- name: restart nzbget
+  service:
+    name: nzbget
+    state: restarted
+
+- name: reload systemd
+  command: systemctl daemon-reload

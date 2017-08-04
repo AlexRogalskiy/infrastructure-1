@@ -1,0 +1,30 @@
+---
+
+- name: Launch server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    vm_name: "sonarr"
+    vm_template: "ubuntu-template"
+    vm_type: "sonarr"
+    vm_memory_mb: "2048"
+    vm_num_cpus: 4
+    esxi_host: esxi2
+    vm_networks:
+      - name: VPN
+        device_type: vmxnet3
+        type: dhcp
+
+  roles:
+    - ../roles/vcenter/launch_instance
+
+- name: Setup sonarr
+  hosts: instances
+  user: ubuntu
+  become: yes
+
+  roles:
+    - ../roles/expand_root
+    - sonarr

@@ -1,0 +1,70 @@
+---
+
+- name: Add mono key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+    state: present
+
+- name: Add mono repo
+  apt_repository:
+    repo: deb http://download.mono-project.com/repo/debian jessie main
+    state: present
+
+- name: Add packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - nfs-common
+    - mono-devel
+    - mediainfo
+    - sqlite3
+    - libmono-cil-dev
+
+- name: Add mount to fstab
+  mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
+
+- name: Create radarr group
+  group:
+    name: radarr
+    state: present
+
+- name: Create radarr User
+  user:
+    name: radarr
+    shell: /bin/bash
+    groups: radarr
+    append: yes
+
+- name: Ensure radarr directory exists and has correct permissions
+  file:
+    path: /opt/radarr
+    owner: radarr
+    group: radarr
+    state: directory
+    recurse: yes
+
+- name: Copy radarr install script
+  copy:
+    src: install.sh
+    dest: /tmp/install.sh
+    mode: a+rx
+
+- name: Install radarr
+  shell: /tmp/install.sh
+  args:
+    creates: /opt/radarr/Radarr.exe
+
+- name: Create radarr service
+  copy: src=radarr.service dest=/etc/systemd/system/radarr.service
+  notify:
+    - reload systemd
+    - restart radarr
+
+- name: Start radarr
+  systemd:
+    name: radarr
+    enabled: yes
+    state: started

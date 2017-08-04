@@ -1,0 +1,9 @@
+---
+
+- name: restart sonarr
+  service:
+    name: sonarr
+    state: restarted
+
+- name: reload systemd
+  command: systemctl daemon-reload

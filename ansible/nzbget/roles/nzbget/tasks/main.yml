@@ -1,0 +1,66 @@
+---
+
+- name: Copy apt settings
+  copy:
+    src: apt-settings
+    dest: /etc/apt/preferences.d/10-apt-pin
+
+- name: Add artful repo
+  apt_repository:
+    repo: deb http://archive.ubuntu.com/ubuntu artful universe
+    state: present
+
+- name: Add packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - nfs-common
+    - nzbget
+    - p7zip-full
+    - unrar
+
+- name: Add mount to fstab
+  mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
+
+- name: Create nzbget group
+  group:
+    name: nzbget
+    state: present
+
+- name: Create nzbget User
+  user:
+    name: nzbget
+    shell: /bin/bash
+    groups: nzbget
+    append: yes
+
+- name: Ensure nzbget directory exists and has correct permissions
+  file:
+    path: /opt/nzbget
+    owner: nzbget
+    group: nzbget
+    state: directory
+    recurse: yes
+
+- name: Create nzbget service
+  copy: src=nzbget.service dest=/etc/systemd/system/nzbget.service
+  notify:
+    - reload systemd
+    - restart nzbget
+
+- name: Copy nzbget configuration
+  template:
+    src: nzbget.conf
+    dest: /opt/nzbget/nzbget.conf
+    owner: nzbget
+    group: nzbget
+  notify:
+    - restart nzbget
+
+- name: Start nzbget
+  systemd:
+    name: nzbget
+    enabled: yes
+    state: started

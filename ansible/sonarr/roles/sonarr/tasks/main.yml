@@ -1,0 +1,69 @@
+---
+
+- name: Add sonarr key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: FDA5DFFC
+    state: present
+
+- name: Add sonarr repo
+  apt_repository:
+    repo: deb http://apt.sonarr.tv/ master main
+    state: present
+
+- name: Add mono key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+    state: present
+
+- name: Add mono repo
+  apt_repository:
+    repo: deb http://download.mono-project.com/repo/debian jessie main
+    state: present
+
+- name: Add packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - nfs-common
+    - nzbdrone
+    - libmono-cil-dev
+    - libcurl4-openssl-dev
+
+- name: Add mount to fstab
+  mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
+
+- name: Create nzbdrone group
+  group:
+    name: nzbdrone
+    state: present
+
+- name: Create nzbdrone User
+  user:
+    name: nzbdrone
+    shell: /bin/bash
+    groups: nzbdrone
+    append: yes
+
+- name: Ensure sonarr directory exists and has correct permissions
+  file:
+    path: /opt/NzbDrone
+    owner: nzbdrone
+    group: nzbdrone
+    state: directory
+    recurse: yes
+
+- name: Create sonarr service
+  copy: src=sonarr.service dest=/etc/systemd/system/sonarr.service
+  notify:
+    - reload systemd
+    - restart sonarr
+
+- name: Start sonarr
+  systemd:
+    name: sonarr
+    enabled: yes
+    state: started
