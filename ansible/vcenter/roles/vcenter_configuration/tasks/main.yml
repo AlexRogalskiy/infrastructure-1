@@ -60,7 +60,8 @@
     password: "{{ item.value.password }}"
     switch_name: vSwitch0
     portgroup_name: Management Network
-    vlan_id: 10
+    #vlan_id: 10
+    vlan_id: 0
     validate_certs: no
   with_dict: "{{ esxi_hosts }}"
 
@@ -72,7 +73,8 @@
     password: "{{ item.value.password }}"
     switch_name: vSwitch0
     portgroup_name: VM Network
-    vlan_id: 10
+    #vlan_id: 10
+    vlan_id: 0
     validate_certs: no
   with_dict: "{{ esxi_hosts }}"
 
@@ -86,6 +88,8 @@
     portgroup_name: LAN
     vlan_id: 4095
     validate_certs: no
+    network_policy:
+      promiscuous_mode: True
   with_dict: "{{ esxi_hosts }}"
 
 - name: Configure wan portgroup
@@ -110,4 +114,18 @@
     portgroup_name: VPN
     vlan_id: 20
     validate_certs: no
+  with_dict: "{{ esxi_hosts }}"
+
+- name: Configure wan tap portgroup
+  local_action:
+    module: fixed_vmware_portgroup
+    hostname: "{{ item.value.host }}"
+    username: "{{ item.value.username }}"
+    password: "{{ item.value.password }}"
+    switch_name: vSwitch0
+    portgroup_name: WAN Tap
+    vlan_id: 30
+    validate_certs: no
+    network_policy:
+      promiscuous_mode: True
   with_dict: "{{ esxi_hosts }}"

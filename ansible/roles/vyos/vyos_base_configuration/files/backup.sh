@@ -9,6 +9,10 @@ do
   true
 done
 
+# Delete the mirror
+tc qdisc del dev eth1 ingress
+tc qdisc del dev eth1 root
+
 # Ensure that we have the correct group or we'll corrupt the configuration
 if [ "$(id -g -n)" != 'vyattacfg' ] ; then
 exec sg vyattacfg -c "/bin/vbash $(readlink -f $0) $@"

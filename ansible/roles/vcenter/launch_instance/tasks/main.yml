@@ -72,6 +72,13 @@
 - name: Wait for instances to become available
   wait_for:
     state=started
+    host={{ instance["hw_" + instance.hw_interfaces[0]].ipaddresses[0] }}
+    port=22
+  when: instance is defined and instance.hw_interfaces.0 is defined and instance["hw_" + instance.hw_interfaces[0]].ipaddresses.0 is defined and vm_no_wait is not defined
+
+- name: Wait for instances to become available
+  wait_for:
+    state=started
     host={{ instance.ipv4 }}
     port=22
-  when: instance is defined and vm_no_wait is not defined
+  when: instance is defined and instance.hw_interfaces.0 is defined and instance["hw_" + instance.hw_interfaces[0]].ipaddresses.0 is not defined and vm_no_wait is not defined
