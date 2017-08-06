@@ -1,0 +1,21 @@
+---
+
+- name: Copy docker config
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+  notify:
+    - restart docker
+
+- name: Override docker startup
+  file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+
+- name: Override docker startup
+  copy:
+    src: docker_startup.conf
+    dest: /etc/systemd/system/docker.service.d/10-docker_startup.conf
+  notify:
+    - reload systemd
+    - restart docker

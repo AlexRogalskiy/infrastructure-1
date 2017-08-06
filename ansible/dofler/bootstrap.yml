@@ -1,0 +1,37 @@
+---
+
+- name: Launch server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    vm_name: "dofler"
+    vm_template: "ubuntu-template"
+    vm_type: "dofler"
+    vm_memory_mb: "4096"
+    vm_num_cpus: 4
+    esxi_host: esxi2
+    vm_networks:
+      - name: VM Network
+        device_type: vmxnet3
+        type: dhcp
+      - name: WAN Tap
+        device_type: vmxnet3
+
+  roles:
+    - ../roles/vcenter/launch_instance
+
+- name: Setup dofler
+  hosts: instances
+  user: ubuntu
+  become: yes
+
+  vars:
+    wan_interface: ens160
+
+  roles:
+    - ../roles/expand_root
+    - ../roles/docker/daemon
+    - ../roles/docker/expose
+    - network

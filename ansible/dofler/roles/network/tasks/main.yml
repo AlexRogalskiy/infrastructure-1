@@ -1,0 +1,40 @@
+---
+
+- name: Install mirror_tools
+  git:
+    repo: "https://github.com/SteveMcGrath/mirror_tools.git"
+    dest: "/opt/mirror_tools"
+    clone: yes
+    update: yes
+    force: yes
+  register: git
+
+- name: Install mirror_tools
+  file:
+    path: /opt/mirror_tools/tc-mirror.sh
+    mode: a+rx
+    state: file
+
+- name: Update network configuration
+  lineinfile:
+    path: /etc/network/interfaces
+    regexp: "^iface {{ wan_interface }} inet"
+    line: "iface {{ wan_interface }} inet manual"
+    state: present
+  notify:
+    - restart networking
+
+- name: Update network configuration
+  blockinfile:
+    path: /etc/network/interfaces
+    marker: "# Ansible managed {mark}"
+    content: |
+      iface span0 inet manual
+              bridge_stp off
+              bridge_fd 0
+              bridge_maxwait 0
+              bridge_ageing 0
+              post-up /opt/mirror_tools/tc-mirror.sh build {{ wan_interface }} span0
+              pre-down /opt/mirror_tools/tc-mirror.sh teardown {{ wan_interface }}
+  notify:
+    - restart networking
