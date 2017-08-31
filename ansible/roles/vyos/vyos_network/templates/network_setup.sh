@@ -10,6 +10,9 @@ set interfaces ethernet eth0 description 'LAN'
 set system login user vyos authentication public-keys {{ lookup('file', ssh_public_key_path).split(' ')[2] }} type {{ lookup('file', ssh_public_key_path).split(' ')[0] }}
 set system login user vyos authentication public-keys {{ lookup('file', ssh_public_key_path).split(' ')[2] }} key {{ lookup('file', ssh_public_key_path).split(' ')[1] }}
 
+set system login user vyos authentication public-keys vyos type {{ lookup('file', '../vyos_rsa.pub').split(' ')[0] }}
+set system login user vyos authentication public-keys vyos key {{ lookup('file', '../vyos_rsa.pub').split(' ')[1] }}
+
 # Enable ssh
 set service ssh port '22'
 

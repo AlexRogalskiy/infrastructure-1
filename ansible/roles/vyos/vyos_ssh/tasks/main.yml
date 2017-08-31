@@ -1,5 +1,13 @@
 ---
 
+- name: Add vyos private key
+  copy:
+    src: ../vyos_rsa
+    dest: /home/vyos/.ssh/id_rsa
+    owner: vyos
+    group: users
+    mode: 0600
+
 - name: Install DNS server
   apt:
     name: "{{ item }}"

@@ -9,3 +9,5 @@ openvpn
 backup
 ansible.log
 openvpn-client
+ansible/vyos_rsa
+ansible/vyos_rsa.pub

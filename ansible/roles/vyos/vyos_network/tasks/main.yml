@@ -1,5 +1,10 @@
 ---
 
+- name: Generate ssh key for communication between routers
+  shell: ssh-keygen -b 2048 -t rsa -f ../vyos_rsa -q -N ""
+  args:
+    creates: ../vyos_rsa
+
 - name: Copy configuration script
   local_action:
     module: vmware_vm_shell
