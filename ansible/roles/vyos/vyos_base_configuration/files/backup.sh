@@ -20,10 +20,10 @@ fi
 
 source /opt/vyatta/etc/functions/script-template
 
-# Disable DHCP server
 # Make sure that this is not saved to the boot config, or the configuration might not load on boot.
+# Stop outbound OpenVPN
 configure
-set service dhcp-server disabled 'true'
+set interfaces openvpn vtun1 disable
 commit
 
 exit
