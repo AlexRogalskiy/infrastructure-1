@@ -49,6 +49,9 @@
   user: vyos
   gather_facts: false
 
+  vars_files:
+    - ../vars/vyos.yml
+
   roles:
     - ../roles/vyos/vyos_base_configuration
     - vyos_configuration
