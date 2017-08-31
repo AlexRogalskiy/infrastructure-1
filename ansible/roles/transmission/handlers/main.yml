@@ -2,5 +2,8 @@
 
 - name: restart transmission
   service:
-    name: transmission-daemon
+    name: transmission-daemon.path
     state: restarted
+
+- name: reload systemd
+  command: systemctl daemon-reload

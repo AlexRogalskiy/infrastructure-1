@@ -19,9 +19,23 @@
 - name: Add mount to fstab
   mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
 
-- name: Stop transmission
-  service:
-    name: transmission-daemon
+- name: Disable transmission in systemd
+  systemd:
+    name: transmission-daemon.service
+    enabled: no
+    state: stopped
+
+- name: Add transmission systemd config
+  copy:
+    src: transmission_startup.conf
+    dest: /lib/systemd/system/transmission-daemon.path
+  notify:
+    - reload systemd
+
+- name: Add transmission path in systemd
+  systemd:
+    name: transmission-daemon.path
+    enabled: yes
     state: stopped
 
 - name: Copy Transmission configuration
@@ -30,8 +44,3 @@
     dest: /etc/transmission-daemon/settings.json
   notify:
     - restart transmission
-
-- name: Start transmission
-  service:
-    name: transmission-daemon
-    state: started
