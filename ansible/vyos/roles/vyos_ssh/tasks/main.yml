@@ -1,0 +1,10 @@
+---
+
+- name: Copy template scripts
+  become: yes
+  copy:
+    src: "{{ item }}"
+    dest: "/config/scripts/{{ item }}"
+    mode: a+rx
+  with_items:
+    - copy_bind.sh

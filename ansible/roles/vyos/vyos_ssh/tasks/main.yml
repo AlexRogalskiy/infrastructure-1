@@ -60,8 +60,18 @@
     - named.conf.local
     - named.conf.options
     - home.dmarby.se
-    - dhcp.home.dmarby.se
     - db.10
+
+- name: Add configs if they don't exist
+  template:
+    src: "{{ item }}"
+    dest: "/etc/bind/{{ item }}"
+    owner: bind
+    group: bind
+    force: no
+  notify: restart bind
+  with_items:
+    - dhcp.home.dmarby.se
 
 - name: Clean journals
   shell: rm -rf /etc/bind/*.jnl

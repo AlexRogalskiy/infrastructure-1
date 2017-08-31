@@ -44,6 +44,17 @@
   roles:
     - name: ../roles/vyos/vyos_network
 
+- name: Run tasks against vyos
+  hosts: instances
+  user: vyos
+  become: yes
+
+  vars_files:
+    - ../vars/vyos.yml
+
+  roles:
+    - vyos_ssh
+
 - name: Configure vyos
   hosts: instances
   user: vyos
