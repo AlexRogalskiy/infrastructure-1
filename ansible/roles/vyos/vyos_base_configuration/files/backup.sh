@@ -21,8 +21,10 @@ fi
 source /opt/vyatta/etc/functions/script-template
 
 # Make sure that this is not saved to the boot config, or the configuration might not load on boot.
-# Stop outbound OpenVPN
 configure
+# Disable DHCP
+set service dhcp-server disabled 'true'
+# Stop outbound OpenVPN
 set interfaces openvpn vtun1 disable
 commit
 

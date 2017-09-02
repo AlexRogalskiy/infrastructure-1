@@ -38,6 +38,11 @@ sudo service bind9 restart
 
 # Restart OpenVPN
 configure
+
+# Enable DHCP
+set service dhcp-server disabled 'false'
+commit
+
 set interfaces openvpn vtun0 disable
 commit
 until ping -c1 www.google.com &>/dev/null

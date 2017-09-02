@@ -7,4 +7,4 @@
     dest: "/config/scripts/{{ item }}"
     mode: a+rx
   with_items:
-    - copy_bind.sh
+    - sync_to_secondary.sh
