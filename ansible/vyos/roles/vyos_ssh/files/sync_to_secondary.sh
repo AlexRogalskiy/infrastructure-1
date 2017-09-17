@@ -1,4 +1,8 @@
 #!/bin/vbash
+if [ $(whoami) != "vyos" ]; then
+  exec sudo su vyos -c "/bin/vbash -l $0 $@"
+  exit
+fi
 
 RSYNCBIN=/usr/bin/rsync
 SSHBIN=/usr/bin/ssh
