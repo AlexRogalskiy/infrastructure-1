@@ -17,10 +17,18 @@ if [[ ! ("${IMAGE_NAMES[@]}" =~ "$IMAGE") ]]; then
     display_error
 fi
 
-if [ -n "$DEBUG" ]; then
-  PACKER_LOG=1 packer build -force -var-file=private_vars.json packer/$IMAGE/packer.json
+if [ $IMAGE = "raspbian" ]; then
+  PACKER_COMMAND="sudo packer build -force /vagrant/packer.json"
+  VAGRANT_CWD=packer/$IMAGE vagrant up
+  VAGRANT_CWD=packer/$IMAGE vagrant ssh -c "$PACKER_COMMAND"
+  VAGRANT_CWD=packer/$IMAGE vagrant ssh -c "sudo mv output-arm-image/image /vagrant/raspbian.img"
 else
-  packer build -force -var-file=private_vars.json packer/$IMAGE/packer.json
+  PACKER_COMMAND="packer build -force -var-file=private_vars.json packer/$IMAGE/packer.json"
+  if [ -n "$DEBUG" ]; then
+    PACKER_LOG=1 $PACKER_COMMAND
+  else
+    $PACKER_COMMAND
+  fi
 fi
 
 trap : 0
