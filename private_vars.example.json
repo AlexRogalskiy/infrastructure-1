@@ -17,5 +17,7 @@
   "packer_vsphere_host": "",
   "packer_vsphere_username": "",
   "packer_vsphere_password": "",
-  "packer_vsphere_datastore": ""
+  "packer_vsphere_datastore": "",
+  "wifi_ssid": "",
+  "wifi_password": ""
 }

@@ -7,6 +7,7 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes -qq -o Dpkg::Options:
 sudo apt-get install -y software-properties-common
 
 sudo add-apt-repository --yes ppa:gophers/archive
+sudo apt-add-repository --yes ppa:ansible/ansible
 
 # Install required packages
 sudo apt-get update
@@ -29,16 +30,16 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 go get -u github.com/golang/dep/cmd/dep
 
 # Download and install packer
-wget https://releases.hashicorp.com/packer/1.1.3/packer_1.1.3_linux_amd64.zip \
-    -q -O /tmp/packer_1.1.3_linux_amd64.zip
+wget https://releases.hashicorp.com/packer/1.2.1/packer_1.2.1_linux_amd64.zip \
+    -q -O /tmp/packer_1.2.1_linux_amd64.zip
 pushd /tmp
-unzip packer_1.1.3_linux_amd64.zip
+unzip packer_1.2.1_linux_amd64.zip
 sudo cp packer /usr/local/bin
 popd
 
 mkdir -p $GOPATH/src/github.com/solo-io/
 pushd $GOPATH/src/github.com/solo-io/
-git clone https://github.com/solo-io/packer-builder-arm-image
+git clone https://github.com/DMarby/packer-builder-arm-image
 pushd ./packer-builder-arm-image
 dep ensure
 go build
@@ -55,5 +56,6 @@ sudo apt-get remove --purge --auto-remove -y \
     wget \
     curl \
     unzip \
-    ppa-purge
+    ppa-purge \
+    golang-1.9-go
 sudo apt-get purge -y --auto-remove
