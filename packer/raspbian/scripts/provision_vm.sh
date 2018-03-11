@@ -39,7 +39,7 @@ popd
 
 mkdir -p $GOPATH/src/github.com/solo-io/
 pushd $GOPATH/src/github.com/solo-io/
-git clone https://github.com/DMarby/packer-builder-arm-image
+git clone https://github.com/solo-io/packer-builder-arm-image
 pushd ./packer-builder-arm-image
 dep ensure
 go build
