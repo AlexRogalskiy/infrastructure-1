@@ -1,0 +1,44 @@
+---
+
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - lm-sensors
+    - hddtemp
+    - smartmontools
+    - flashcache-utils
+
+- name: Copy /etc/modules
+  copy:
+    src: modules
+    dest: /etc/modules
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Replace grub configuration
+  copy:
+    src: grub
+    dest: /etc/default/grub
+    owner: root
+    group: root
+    mode: 0644
+  notify: update grub
+
+- name: Replace fstab
+  copy:
+    src: fstab
+    dest: /etc/fstab
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Replace crypttab
+  copy:
+    src: crypttab
+    dest: /etc/crypttab
+    owner: root
+    group: root
+    mode: 0644

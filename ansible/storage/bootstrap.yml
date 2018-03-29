@@ -1,0 +1,11 @@
+---
+
+- name: Storage
+  hosts: storage
+  user: david
+  become: yes
+
+  roles:
+    - ../roles/base
+    - storage
+    - lvm

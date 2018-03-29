@@ -1,0 +1,2 @@
+sda5_crypt UUID=17e29075-1c30-40f1-bb14-398a2c07ee83 none luks,discard
+luks1 UUID=9382665e-b72a-4766-bc05-98179c02460b none luks

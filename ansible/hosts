@@ -1,2 +1,5 @@
 [local]
 localhost
+
+[storage]
+10.0.0.11
