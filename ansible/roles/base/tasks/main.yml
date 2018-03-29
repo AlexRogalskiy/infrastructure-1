@@ -1,0 +1,25 @@
+---
+
+- name: Update packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Add identity key to authorized keys on host
+  authorized_key: user={{ ansible_ssh_user }} key="{{ lookup('file', ssh_public_key_path) }}"
+
+- name: Disable password login
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PasswordAuthentication" line="PasswordAuthentication no"
+  notify: restart sshd
+
+- name: Disable remote root login
+  lineinfile: dest=/etc/ssh/sshd_config regexp="^#?PermitRootLogin" line="PermitRootLogin no"
+  notify: restart sshd
+
+- name: Install common packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - htop
+    - vim
