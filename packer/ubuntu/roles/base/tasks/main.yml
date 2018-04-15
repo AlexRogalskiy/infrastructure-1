@@ -1,11 +1,18 @@
 ---
 
-- name: Ensure /etc/sudoers.d/ubuntu file has correct permissions
-  action: file path=/etc/sudoers.d/ubuntu mode=0440 state=file owner=root group=root
-  tags: ubuntu
+- name: Disable local login for the david user
+  user:
+    name: 'david'
+    password: '!'
 
 - name: Enable rc-local
   command: systemctl enable rc-local.service
 
 - name: Replace rc.local
-  copy: src=rc.local dest=/etc/rc.local owner=root group=root mode=0755 force=yes
+  copy:
+    src: rc.local
+    dest: /etc/rc.local
+    owner: root
+    group: root
+    mode: 0755
+    force: yes

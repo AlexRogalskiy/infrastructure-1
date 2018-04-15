@@ -7,13 +7,13 @@
       "tools_upload_flavor": "linux",
       "headless": true,
 
-      "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.2-server-amd64.iso",
-      "iso_checksum": "737ae7041212c628de5751d15c3016058b0e833fdc32e7420209b76ca3d0a535",
+      "iso_url": "http://releases.ubuntu.com/16.04.4/ubuntu-16.04.4-server-amd64.iso",
+      "iso_checksum": "0a03608988cfd2e50567990dc8be96fb3c501e198e2e6efcb846d89efc7b89f2",
       "iso_checksum_type": "sha256",
 
       "ssh_port": 22,
       "ssh_timeout": "15m",
-      "ssh_username": "ubuntu",
+      "ssh_username": "david",
       "ssh_password": "ubuntu",
       "ssh_wait_timeout": "30m",
 
@@ -49,46 +49,38 @@
       "remote_datastore": "{{user `packer_vsphere_datastore`}}",
       "remote_username": "{{user `packer_vsphere_username`}}",
       "remote_password": "{{user `packer_vsphere_password`}}",
+      "keep_registered": "true",
+      "skip_export": "true",
+
+      "output_directory": "{{ build_name }}-template",
+      "vm_name": "{{ build_name }}-template",
+      "vmdk_name": "{{ build_name }}-template",
 
       "vmx_data": {
         "memsize": "4096",
         "numvcpus": "4",
 
         "ethernet0.networkName": "VM Network"
-      },
-
-      "format": "ovf",
-      "ovftool_options": ["--noImageFiles"]
+      }
     }
   ],
   "post-processors": [
     {
       "type": "vsphere-template",
-
       "host": "{{user `vcenter_host`}}",
       "username": "{{user `vcenter_username`}}",
-      "password": "{{user `vcenter_password`}}",
-
-      "datacenter": "{{user `vcenter_datacenter`}}",
-      "datastore": "{{user `vcenter_datastore`}}",
-
-      "os_type": "ubuntu64Guest",
-      "os_id": "94",
-
-      "vm_name": "{{ build_name }}-template"
+      "password": "{{user `vcenter_password`}}"
     }
   ],
   "provisioners": [
     {
       "type": "ansible",
       "playbook_file": "packer/ubuntu/playbook.yml",
-      "user": "ubuntu",
+      "user": "david",
       "extra_arguments": ["--extra-vars", "ssh_public_key_path={{user `ssh_public_key_path`}} ansible_python_interpreter=/usr/bin/python3"]
     }
   ],
   "variables": {
-    "vcenter_datacenter": "",
-    "vcenter_datastore": "",
     "vcenter_host": "",
     "vcenter_password": "",
     "vcenter_username": "",

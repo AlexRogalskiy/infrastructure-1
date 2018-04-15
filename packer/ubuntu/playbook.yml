@@ -4,7 +4,7 @@
   become: yes
 
   roles:
-    - ../../ansible/base
+    - ../../ansible/roles/base
     - base
     - vmtools
     - purge

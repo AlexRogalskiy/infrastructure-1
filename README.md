@@ -12,9 +12,6 @@ Then add it to the path:
 
 ```ln -s /Applications/VMware\ OVF\ Tool/ovftool /usr/local/bin/ovftool```
 
-In order to push templates to vSphere you need to add the [packer-post-processor-vsphere-plugin](https://github.com/DMarby/packer-post-processor-vsphere-template) to your path, follow the instructions [here](https://github.com/DMarby/packer-post-processor-vsphere-template#installing).
-Use the releases from [here](https://github.com/DMarby/packer-post-processor-vsphere-template/releases) or compile it yourself.
-
 Packer will be directly against the ESXI host, this requires that it has SSH enabled.
 It also requires the "GuestIPHack" to be enabled, to enable it via SSH, run:
 
