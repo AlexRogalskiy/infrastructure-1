@@ -5,6 +5,6 @@
 
   roles:
     - ../../ansible/roles/base
-    - base
-    - vmtools
-    - purge
+    - ../roles/base
+    - ../roles/vmtools
+    - ../roles/purge

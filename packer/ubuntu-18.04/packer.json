@@ -1,14 +1,14 @@
 {
   "builders": [
     {
-      "name": "ubuntu",
+      "name": "ubuntu-18.04",
       "type": "vmware-iso",
       "guest_os_type": "ubuntu-64",
       "tools_upload_flavor": "linux",
       "headless": true,
 
-      "iso_url": "http://releases.ubuntu.com/16.04.4/ubuntu-16.04.4-server-amd64.iso",
-      "iso_checksum": "0a03608988cfd2e50567990dc8be96fb3c501e198e2e6efcb846d89efc7b89f2",
+      "iso_url": "http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04-server-amd64.iso",
+      "iso_checksum": "a7f5c7b0cdd0e9560d78f1e47660e066353bb8a79eb78d1fc3f4ea62a07e6cbc",
       "iso_checksum_type": "sha256",
 
       "ssh_port": 22,
@@ -23,23 +23,33 @@
       "disk_size": "8000",
 
       "floppy_files": [
-        "packer/ubuntu/preseed.cfg"
+        "packer/ubuntu-18.04/preseed.cfg"
       ],
 
       "boot_command": [
-        "<enter><wait><f6><esc><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "/install/vmlinuz noapic ",
-        "preseed/file=/floppy/preseed.cfg ",
-        "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-        "hostname={{ build_name }} ",
-        "fb=false debconf/frontend=noninteractive ",
-        "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA ",
-        "keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+        "<esc><wait>",
+        "<esc><wait>",
+        "<enter><wait>",
+        "/install/vmlinuz ",
+        "auto ",
+        "console-setup/ask_detect=false ",
+        "console-setup/layoutcode=us ",
+        "console-setup/modelcode=SKIP ",
+        "debconf/frontend=noninteractive ",
+        "debian-installer=en_US ",
+        "fb=false ",
+        "initrd=/install/initrd.gz ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/layout=USA ",
+        "keyboard-configuration/variant=USA ",
+        "locale=en_US ",
+        "netcfg/get_domain=vm ",
+        "netcfg/get_hostname={{ build_name }} ",
         "grub-installer/bootdev=/dev/sda ",
-        "initrd=/install/initrd.gz -- <enter>"
+        "noapic ",
+        "preseed/file=/floppy/preseed.cfg ",
+        "-- ",
+        "<enter>"
       ],
 
       "shutdown_command": "sudo systemctl poweroff",
@@ -75,7 +85,7 @@
   "provisioners": [
     {
       "type": "ansible",
-      "playbook_file": "packer/ubuntu/playbook.yml",
+      "playbook_file": "packer/ubuntu-18.04/playbook.yml",
       "user": "david",
       "extra_arguments": ["--extra-vars", "ssh_public_key_path={{user `ssh_public_key_path`}} ansible_python_interpreter=/usr/bin/python3"]
     }
