@@ -6,6 +6,7 @@
   become: yes
 
   roles:
-    - ../roles/base
-    - storage
-    - lvm
+    - { role: ../roles/base, tags: base }
+    - { role: storage, tags: storage }
+    - { role: samba, tags: samba }
+    - { role: iptables, tags: iptables }

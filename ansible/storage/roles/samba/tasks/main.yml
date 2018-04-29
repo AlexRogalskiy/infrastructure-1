@@ -1,0 +1,63 @@
+---
+
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - samba
+
+- name: Create groups
+  group:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - storage
+    - storage_write
+
+- name: Create samba users
+  user:
+    name: plex
+    shell: /usr/sbin/nologin
+    createhome: no
+  with_items:
+    - plex
+    - nzbget
+    - radarr
+    - sonarr
+    - transmission
+
+- name: Add users to storage group
+  user:
+    name: "{{ item }}"
+    groups: storage
+    append: yes
+  with_items:
+    - david
+    - plex
+    - nzbget
+    - radarr
+    - sonarr
+    - transmission
+
+- name: Add users to storage_write group
+  user:
+    name: "{{ item }}"
+    groups: storage_write
+    append: yes
+  with_items:
+    - david
+    - nzbget
+    - radarr
+    - sonarr
+    - transmission
+
+- name: Samba configuration
+  copy:
+    src: smb.conf
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+   - restart samba

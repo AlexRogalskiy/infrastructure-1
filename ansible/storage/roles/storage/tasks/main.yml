@@ -9,6 +9,8 @@
     - hddtemp
     - smartmontools
     - flashcache-utils
+    - iotop
+    - nload
 
 - name: Copy /etc/modules
   copy:
@@ -27,6 +29,17 @@
     mode: 0644
   notify: update grub
 
+- name: Copy lvm config
+  copy:
+    src: lvm.conf
+    dest: /etc/lvm/lvm.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - update initramfs
+    - vgscan
+
 - name: Replace fstab
   copy:
     src: fstab
@@ -42,3 +55,13 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Copy mdadm config
+  copy:
+    src: mdadm.conf
+    dest: /etc/mdadm/mdadm.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - update initramfs
