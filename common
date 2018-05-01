@@ -32,5 +32,5 @@ abort()
 IMAGE_NAMES=("ubuntu-18.04" "ubuntu-16.04" "vyos" "raspbian")
 SEPARATED_IMAGE_NAMES=$(join_list_to_string ${IMAGE_NAMES[@]})
 
-APP_NAMES=("unifi" "plex" "proxy" "vcenter" "vyos" "vcenter_setup" "vyos2" "transmission" "transmission-private" "nzbget" "sonarr" "radarr" "dofler" "storage")
+APP_NAMES=("unifi" "plex" "proxy" "vyos" "vcenter_setup" "vyos2" "transmission" "transmission-private" "nzbget" "sonarr" "radarr" "dofler" "storage")
 SEPARATED_APP_NAMES=$(join_list_to_string ${APP_NAMES[@]})

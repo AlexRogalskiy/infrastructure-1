@@ -5,5 +5,20 @@
   connection: local
   gather_facts: false
 
+  vars_prompt:
+    - name: esxi_host
+      prompt: "ESXI Host"
+    - name: esxi_username
+      prompt: "ESXI Username"
+    - name: esxi_password
+      prompt: "ESXI Password"
+      private: yes
+    - name: esxi_datastore
+      prompt: "ESXI datastore"
+    - name: vcsa_password
+      prompt: "VCSA OS Password"
+    - name: vcsa_path
+      prompt: "Path to VCSA installer"
+
   roles:
     - vcenter_setup

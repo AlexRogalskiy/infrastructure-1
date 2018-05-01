@@ -1,9 +1,0 @@
----
-
-- name: Configure vcenter
-  hosts: localhost
-  connection: local
-  gather_facts: false
-
-  roles:
-    - vcenter_configuration

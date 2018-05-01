@@ -9,14 +9,6 @@
       "bcrypt_password": "$2a$10$uXDHPMw9NrPWeFw8XFeHdeuc3NqwjF0khL1l5bUHptzI.pCdE2ISa"
     }
   ],
-  "esxi_hosts": {
-    "name": {
-      "host": "",
-      "username": "",
-      "password": "",
-      "datastore": ""
-    }
-  },
   "transmission_username": "",
   "transmission_password": "",
   "nzbget": {

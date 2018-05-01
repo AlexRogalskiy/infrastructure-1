@@ -12,3 +12,7 @@ openvpn-client
 ansible/vyos_rsa
 ansible/vyos_rsa.pub
 packer/raspbian/raspbian.img
+.terraform
+terraform.tfvars
+terraform.tf
+*.tfstate*
