@@ -57,8 +57,8 @@ resource "vsphere_distributed_virtual_switch" "dvs" {
   network_resource_control_enabled = true
 
   uplinks         = ["uplink1", "uplink2"]
-  active_uplinks  = ["uplink1"]
-  standby_uplinks = ["uplink2"]
+  active_uplinks  = ["uplink1", "uplink2"]
+  standby_uplinks = []
 
   host {
     host_system_id = "${data.vsphere_host.hosts.0.id}"
