@@ -1,9 +1,0 @@
----
-
-- name: Copy unifi configuration
-  copy:
-    src: sites
-    dest: /var/lib/unifi
-    owner: root
-    group: root
-    mode: 0700

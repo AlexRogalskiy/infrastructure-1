@@ -57,7 +57,7 @@ resource "vsphere_distributed_virtual_switch" "dvs" {
   network_resource_control_enabled = true
 
   uplinks         = ["uplink1", "uplink2"]
-  active_uplinks  = ["uplink1", "uplink2"]
+  active_uplinks  = ["uplink1"]
   standby_uplinks = []
 
   host {
@@ -79,7 +79,7 @@ resource "vsphere_distributed_port_group" "management" {
 }
 
 resource "vsphere_distributed_port_group" "vm" {
-  name                            = "VM Network"
+  name                            = "VM"
   distributed_virtual_switch_uuid = "${vsphere_distributed_virtual_switch.dvs.id}"
   vlan_id                         = 0
 }
@@ -104,4 +104,25 @@ resource "vsphere_distributed_port_group" "lan" {
     min_vlan = 0    # Trunk everything
     max_vlan = 4094
   }
+}
+
+# Register common resources used to create VMs
+data "vsphere_datastore" "esxi" {
+  name          = "esxi"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
+}
+
+data "vsphere_resource_pool" "pool" {
+  name          = "dmarby/Resources"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
+}
+
+data "vsphere_network" "vm" {
+  name          = "VM"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
+}
+
+data "vsphere_virtual_machine" "ubuntu-18_04" {
+  name          = "ubuntu-18.04"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
 }

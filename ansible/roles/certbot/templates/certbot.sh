@@ -2,7 +2,7 @@
 
 DOMAIN="$1"
 
-/usr/local/bin/certbot \
+/usr/bin/certbot \
     --text \
     --agree-tos \
     --no-eff-email \

@@ -1,27 +1,11 @@
 ---
 
-- name: Launch server
-  hosts: localhost
-  connection: local
-  gather_facts: false
-
-  vars:
-    vm_name: "unifi"
-    vm_template: "ubuntu-template"
-    vm_type: "unifi"
-    vm_disk_size: 20
-    vm_memory_mb: "1024"
-    esxi_host: esxi
-
-  roles:
-    - ../roles/vcenter/launch_instance
-
 - name: Setup unifi
-  hosts: instances
-  user: ubuntu
+  hosts: unifi
+  user: david
   become: yes
 
   roles:
     - ../roles/expand_root
+    - ../roles/base
     - unifi
-    - unifi_configuration

@@ -2,25 +2,31 @@
   "builders": [
     {
       "name": "ubuntu-18.04",
-      "type": "vmware-iso",
-      "guest_os_type": "ubuntu-64",
-      "tools_upload_flavor": "linux",
-      "headless": true,
+      "type": "vsphere-iso",
 
-      "iso_url": "http://cdimage.ubuntu.com/releases/18.04/release/ubuntu-18.04-server-amd64.iso",
-      "iso_checksum": "a7f5c7b0cdd0e9560d78f1e47660e066353bb8a79eb78d1fc3f4ea62a07e6cbc",
-      "iso_checksum_type": "sha256",
+      "vcenter_server": "{{user `vcenter_host`}}",
+      "username": "{{user `vcenter_username`}}",
+      "password": "{{user `vcenter_password`}}",
+      "datacenter": "{{user `vcenter_datacenter`}}",
+      "cluster": "{{user `vcenter_cluster`}}",
+      "host": "{{user `packer_vsphere_host`}}",
+      "datastore": "{{user `vcenter_datastore`}}",
+      "insecure_connection": true,
 
-      "ssh_port": 22,
-      "ssh_timeout": "15m",
+      "vm_name": "{{ build_name }}",
+      "guest_os_type": "ubuntu64Guest",
       "ssh_username": "david",
       "ssh_password": "ubuntu",
-      "ssh_wait_timeout": "30m",
 
-      "vnc_disable_password": true,
+      "CPUs": 4,
+      "RAM": 4096,
+      "disk_thin_provisioned": true,
+      "disk_size": "8",
+      "network": "VM",
 
-      "disk_type_id": "thin",
-      "disk_size": "8000",
+      "iso_paths": [
+        "[{{user `vcenter_datastore`}}] iso/ubuntu-18.04-server-amd64.iso"
+      ],
 
       "floppy_files": [
         "packer/ubuntu-18.04/preseed.cfg"
@@ -47,39 +53,15 @@
         "netcfg/get_hostname={{ build_name }} ",
         "grub-installer/bootdev=/dev/sda ",
         "noapic ",
-        "preseed/file=/floppy/preseed.cfg ",
+        "preseed/file=/media/preseed.cfg ",
         "-- ",
         "<enter>"
       ],
 
+      "boot_order": "disk,cdrom",
+
       "shutdown_command": "sudo systemctl poweroff",
-
-      "remote_type": "esx5",
-      "remote_host": "{{user `packer_vsphere_host`}}",
-      "remote_datastore": "{{user `packer_vsphere_datastore`}}",
-      "remote_username": "{{user `packer_vsphere_username`}}",
-      "remote_password": "{{user `packer_vsphere_password`}}",
-      "keep_registered": "true",
-      "skip_export": "true",
-
-      "output_directory": "{{ build_name }}-template",
-      "vm_name": "{{ build_name }}-template",
-      "vmdk_name": "{{ build_name }}-template",
-
-      "vmx_data": {
-        "memsize": "4096",
-        "numvcpus": "4",
-
-        "ethernet0.networkName": "VM Network"
-      }
-    }
-  ],
-  "post-processors": [
-    {
-      "type": "vsphere-template",
-      "host": "{{user `vcenter_host`}}",
-      "username": "{{user `vcenter_username`}}",
-      "password": "{{user `vcenter_password`}}"
+      "convert_to_template": true
     }
   ],
   "provisioners": [
@@ -91,13 +73,6 @@
     }
   ],
   "variables": {
-    "vcenter_host": "",
-    "vcenter_password": "",
-    "vcenter_username": "",
-    "packer_vsphere_datastore": "",
-    "packer_vsphere_host": "",
-    "packer_vsphere_password": "",
-    "packer_vsphere_username": "",
     "ssh_public_key_path": "~/.ssh/id_rsa.pub"
   }
 }

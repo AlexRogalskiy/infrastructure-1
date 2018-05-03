@@ -1,36 +1,15 @@
 ---
 
-- name: Ensure /mnt/cdrom is present
-  file: path=/mnt/cdrom state=directory
+- name: Ensure open-vm-tools is not present
+  apt:
+    name: "open-vm-tools"
+    state: absent
+    purge: yes
 
-- name: Mount /mnt/cdrom to /dev/cdrom
-  mount:
-    name: /mnt/cdrom
-    src: /dev/cdrom
-    fstype: iso9660
-    opts: loop
-    state: mounted
+- name: Copy vmware tools
+  copy:
+    src: vmware-tools.tar.gz
+    dest: /tmp/vmware-tools.tar.gz
 
 - name: Extract and install vmware tools
-  shell: cd /tmp && tar -zxpf /mnt/cdrom/VMwareTools-*.tar.gz -C /tmp/ && /tmp/vmware-tools-distrib/vmware-install.pl --force-install --default
-
-- name: Unmount /mnt/cdrom
-  mount:
-    name: /mnt/cdrom
-    src: /dev/cdrom
-    fstype: iso9660
-    opts: loop
-    state: unmounted
-
-- name: Remove /mnt/cdrom from /etc/fstab
-  mount:
-    name: /mnt/cdrom
-    src: /dev/cdrom
-    fstype: iso9660
-    opts: loop
-    state: absent
-
-- name: Remove /dev/cdrom
-  file:
-    path: /dev/cdrom
-    state: absent
+  shell: cd /tmp && tar -zxpf /tmp/vmware-tools.tar.gz -C /tmp/ && /tmp/vmware-tools-distrib/vmware-install.pl --force-install --default

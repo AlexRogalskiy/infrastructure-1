@@ -1,13 +1,13 @@
 ---
 
 - hosts: all
-  user: ubuntu
+  user: david
   become: yes
 
   roles:
     - ../../ansible/roles/base
     - ../roles/base
-     - ../roles/vmtools
+    - ../roles/vmtools
     - ../roles/purge
 
   vars:

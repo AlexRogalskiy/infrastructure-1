@@ -16,4 +16,4 @@
   shell: find /var/log -type f | while read f; do echo -ne '' > $f; done;
 
 - name: Remove bash history
-  shell: unset HISTFILE && rm -f /root/.bash_history && rm -f /home/ubuntu/.bash_history
+  shell: unset HISTFILE && rm -f /root/.bash_history && rm -f /home/david/.bash_history

@@ -1,27 +1,11 @@
 ---
 
-- name: Launch server
-  hosts: localhost
-  connection: local
-  gather_facts: false
-
-  vars:
-    vm_name: "plex"
-    vm_template: "ubuntu-template"
-    vm_type: "plex"
-    vm_memory_mb: "4096"
-    vm_num_cpus: 16
-    vm_disk_size: 100
-    esxi_host: esxi
-
-  roles:
-    - ../roles/vcenter/launch_instance
-
 - name: Setup plex
-  hosts: instances
-  user: ubuntu
+  hosts: plex
+  user: david
   become: yes
 
   roles:
     - ../roles/expand_root
+    - ../roles/base
     - plex

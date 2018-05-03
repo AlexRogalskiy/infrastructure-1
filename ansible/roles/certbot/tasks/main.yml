@@ -1,5 +1,12 @@
 ---
 
+- name: Add requirements for apt_repository
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3-apt
+
 - name: Add certbot repo
   apt_repository:
     repo: ppa:certbot/certbot
@@ -9,13 +16,13 @@
   apt: name="{{ item }}" state=latest update_cache=yes
   with_items:
     - certbot
-    - python-pip
+    - python3-pip
     - build-essential
     - openssl
     - libssl-dev
 
 - name: Ensure the latest pip is installed
-  shell: pip install --upgrade pip
+  shell: pip3 install --upgrade pip
 
 - name: Add pip packages
   pip:
