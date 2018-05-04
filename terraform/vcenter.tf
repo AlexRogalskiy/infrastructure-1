@@ -107,22 +107,42 @@ resource "vsphere_distributed_port_group" "lan" {
 }
 
 # Register common resources used to create VMs
-data "vsphere_datastore" "esxi" {
-  name          = "esxi"
-  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
-}
 
 data "vsphere_resource_pool" "pool" {
   name          = "dmarby/Resources"
   datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
 }
 
+# Datastores
+data "vsphere_datastore" "esxi" {
+  name          = "esxi"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
+}
+
+# Networks
+
 data "vsphere_network" "vm" {
   name          = "VM"
   datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
 }
 
+data "vsphere_network" "lan" {
+  name          = "LAN"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
+}
+
+data "vsphere_network" "wan" {
+  name          = "WAN"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
+}
+
+# Templates
 data "vsphere_virtual_machine" "ubuntu-18_04" {
   name          = "ubuntu-18.04"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
+}
+
+data "vsphere_virtual_machine" "vyos-1_2" {
+  name          = "vyos-1.2"
   datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
 }

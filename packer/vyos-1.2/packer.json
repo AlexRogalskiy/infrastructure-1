@@ -1,0 +1,89 @@
+{
+  "builders": [
+    {
+      "name": "vyos-1.2",
+      "type": "vsphere-iso",
+
+      "vcenter_server": "{{user `vcenter_host`}}",
+      "username": "{{user `vcenter_username`}}",
+      "password": "{{user `vcenter_password`}}",
+      "datacenter": "{{user `vcenter_datacenter`}}",
+      "cluster": "{{user `vcenter_cluster`}}",
+      "host": "{{user `packer_vsphere_host`}}",
+      "datastore": "{{user `vcenter_datastore`}}",
+      "insecure_connection": true,
+
+      "vm_name": "{{ build_name }}",
+      "guest_os_type": "debian8_64Guest",
+      "ssh_username": "vyos",
+      "ssh_password": "vyos",
+
+      "CPUs": 4,
+      "RAM": 2048,
+      "disk_thin_provisioned": true,
+      "disk_size": "4",
+      "network": "VM",
+
+      "iso_paths": [
+        "[{{user `vcenter_datastore`}}] iso/vyos-1.2.0-rolling+201805040337-amd64.iso"
+      ],
+
+      "boot_command": [
+        "<enter><wait10><wait10><wait10>",
+        "vyos<enter><wait>",
+        "vyos<enter><wait>",
+        "install image<enter><wait>",
+        "<enter><wait>",
+        "<enter><wait>",
+        "<enter><wait>",
+        "Yes<enter><wait>",
+        "<enter><wait10>",
+        "<enter><wait10>",
+        "<enter><wait10>",
+        "vyos<enter><wait>",
+        "vyos<enter><wait>",
+        "<enter><wait10>",
+        "sudo sed -i 's/reboot -d -f -i/eject -m cdrom\\n\\treboot -d -f -i/' /etc/init.d/reboot<enter><wait>",
+        "reboot<enter><wait>",
+        "Yes<enter><wait10>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>",
+        "vyos<enter><wait>",
+        "vyos<enter><wait>",
+        "configure<enter><wait>",
+        "set interface ethernet eth0 address dhcp<enter><wait>",
+        "set service ssh<enter><wait>",
+        "set system package repository vmware components 'main'<enter><wait>",
+        "set system package repository vmware distribution 'trusty'<enter><wait>",
+        "set system package repository vmware url 'https://packages.vmware.com/packages/ubuntu'<enter><wait>",
+        "commit<enter><wait>",
+        "save<enter><wait>",
+        "exit<enter><wait>",
+        "sudo apt-get -y update<enter><wait>",
+        "sudo apt-get -y install open-vm-tools-deploypkg --force-yes<enter><wait>",
+        "sudo service open-vm-tools restart<enter><wait>",
+        "reboot<enter><wait>",
+        "Yes<enter><wait10>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>",
+        "<wait10>"
+      ],
+
+      "boot_order": "disk,cdrom",
+
+      "convert_to_template": true
+    }
+  ],
+  "provisioners": [
+    {
+      "scripts": [
+        "packer/vyos-1.2/scripts/base.sh",
+        "packer/vyos-1.2/scripts/cleanup.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
