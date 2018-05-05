@@ -1,5 +1,10 @@
 ---
 
+- name: Add newer samba ppa
+  apt_repository:
+    repo: ppa:linux-schools/samba-latest
+    state: present
+
 - name: Install packages
   apt:
     name: "{{ item }}"
@@ -14,6 +19,7 @@
   with_items:
     - storage
     - storage_write
+    - timemachine
 
 - name: Create samba users
   user:
@@ -51,6 +57,14 @@
     - radarr
     - sonarr
     - transmission
+
+- name: Add users to timemachine group
+  user:
+    name: "{{ item }}"
+    groups: timemachine
+    append: yes
+  with_items:
+    - david
 
 - name: Samba configuration
   copy:

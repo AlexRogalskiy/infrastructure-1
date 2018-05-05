@@ -19,6 +19,7 @@
       -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
       -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
       -A INPUT -m state --state NEW -p tcp --dport 445 -j ACCEPT # Samba
+      -A INPUT -p udp -m state --state NEW -m udp --dport 5353 -j ACCEPT # AVAHI
       -P INPUT DROP
       -P FORWARD DROP
       -P OUTPUT ACCEPT

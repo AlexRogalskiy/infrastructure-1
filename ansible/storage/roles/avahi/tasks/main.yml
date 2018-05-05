@@ -1,0 +1,17 @@
+---
+
+- name: Install avahi-utils
+  apt:
+    name: avahi-utils
+    state: latest
+
+- name: Create services
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/avahi/services/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - timemachine.service
+  notify: restart avahi-daemon
