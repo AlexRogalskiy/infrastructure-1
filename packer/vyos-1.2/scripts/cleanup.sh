@@ -15,4 +15,6 @@ sudo rm -rf /var/cache/apt/*
 echo "pre-up sleep 2" | sudo tee -a /etc/network/interfaces
 
 # Removing hw-id
-delete interfaces ethernet eth0 hw-id && commit && save
+delete interfaces ethernet eth0 hw-id
+commit
+save

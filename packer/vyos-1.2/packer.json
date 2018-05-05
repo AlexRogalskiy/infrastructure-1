@@ -15,7 +15,7 @@
 
       "vm_name": "{{ build_name }}",
       "guest_os_type": "debian8_64Guest",
-      "ssh_username": "vyos",
+      "ssh_username": "david",
       "ssh_password": "vyos",
 
       "CPUs": 4,
@@ -29,7 +29,7 @@
       ],
 
       "boot_command": [
-        "<enter><wait10><wait10><wait10>",
+        "<enter><wait10><wait10>",
         "vyos<enter><wait>",
         "vyos<enter><wait>",
         "install image<enter><wait>",
@@ -45,31 +45,27 @@
         "<enter><wait10>",
         "sudo sed -i 's/reboot -d -f -i/eject -m cdrom\\n\\treboot -d -f -i/' /etc/init.d/reboot<enter><wait>",
         "reboot<enter><wait>",
-        "Yes<enter><wait10>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>",
+        "Yes<enter><wait10><wait10><wait10><wait10>",
         "vyos<enter><wait>",
         "vyos<enter><wait>",
         "configure<enter><wait>",
-        "set interface ethernet eth0 address dhcp<enter><wait>",
-        "set service ssh<enter><wait>",
-        "set system package repository vmware components 'main'<enter><wait>",
-        "set system package repository vmware distribution 'trusty'<enter><wait>",
-        "set system package repository vmware url 'https://packages.vmware.com/packages/ubuntu'<enter><wait>",
+        "set system login user david authentication plaintext-password vyos<enter><wait>",
+        "set system login user david level admin<enter><wait>",
         "commit<enter><wait>",
         "save<enter><wait>",
         "exit<enter><wait>",
-        "sudo apt-get -y update<enter><wait>",
-        "sudo apt-get -y install open-vm-tools-deploypkg --force-yes<enter><wait>",
-        "sudo service open-vm-tools restart<enter><wait>",
         "reboot<enter><wait>",
-        "Yes<enter><wait10>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>",
-        "<wait10>"
+        "Yes<enter><wait10><wait10><wait10><wait10>",
+        "david<enter><wait>",
+        "vyos<enter><wait>",
+        "sudo mount /dev/fd0 /media<enter><wait>",
+        "/media/BASE.SH<enter><wait10>",
+        "reboot<enter><wait>",
+        "Yes<enter><wait10><wait10><wait10><wait10><wait10><wait10>"
+      ],
+
+      "floppy_files": [
+        "packer/vyos-1.2/scripts/base.sh"
       ],
 
       "boot_order": "disk,cdrom",
@@ -79,9 +75,14 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "source": "/Users/david/.ssh/id_rsa.pub",
+      "destination": "/tmp/id_rsa.pub"
+    },
+    {
       "scripts": [
-        "packer/vyos-1.2/scripts/base.sh",
-        "packer/vyos-1.2/scripts/cleanup.sh"
+        "packer/vyos-1.2/scripts/cleanup.sh",
+        "packer/vyos-1.2/scripts/users.sh"
       ],
       "type": "shell"
     }
