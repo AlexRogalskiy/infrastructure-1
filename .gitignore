@@ -9,10 +9,9 @@ openvpn
 backup
 ansible.log
 openvpn-client
-ansible/vyos_rsa
-ansible/vyos_rsa.pub
-packer/raspbian/raspbian.img
+*.img
 .terraform
 terraform.tfvars
 terraform.tf
 *.tfstate*
+packer/roles/vmtools/files/vmware-tools.tar.gz
