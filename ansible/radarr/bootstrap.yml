@@ -1,30 +1,12 @@
 ---
 
-- name: Launch server
-  hosts: localhost
-  connection: local
-  gather_facts: false
-
-  vars:
-    vm_name: "radarr"
-    vm_template: "ubuntu-template"
-    vm_type: "radarr"
-    vm_memory_mb: "2048"
-    vm_num_cpus: 4
-    esxi_host: esxi2
-    vm_networks:
-      - name: VPN
-        device_type: vmxnet3
-        type: dhcp
-
-  roles:
-    - ../roles/vcenter/launch_instance
-
 - name: Setup radarr
-  hosts: instances
-  user: ubuntu
+  hosts: radarr
+  user: david
   become: yes
 
   roles:
     - ../roles/expand_root
+    - ../roles/base
+    - ../roles/mount_storage
     - radarr
