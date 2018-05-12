@@ -1,6 +1,6 @@
 drive: /dev/sda
 root_partition: /dev/sda5
-lvm_root_partition: /dev/mapper/unassigned--hostname--vg-root
+lvm_root_partition: /dev/mapper/*--vg-root
 grow_partitions:
   - "2"
   - "5"
