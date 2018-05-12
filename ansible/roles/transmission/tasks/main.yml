@@ -11,13 +11,9 @@
     state: present
     update_cache: yes
   with_items:
-    - nfs-common
     - transmission-cli
     - transmission-common
     - transmission-daemon
-
-- name: Add mount to fstab
-  mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
 
 - name: Disable transmission in systemd
   systemd:

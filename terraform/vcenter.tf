@@ -107,15 +107,14 @@ resource "vsphere_distributed_port_group" "lan" {
 }
 
 # Register common resources used to create VMs
-
-data "vsphere_resource_pool" "pool" {
-  name          = "dmarby/Resources"
+# Datastores
+data "vsphere_datastore" "esxi1" {
+  name          = "esxi1"
   datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
 }
 
-# Datastores
-data "vsphere_datastore" "esxi" {
-  name          = "esxi"
+data "vsphere_datastore" "esxi2" {
+  name          = "esxi2"
   datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
 }
 
@@ -133,6 +132,11 @@ data "vsphere_network" "lan" {
 
 data "vsphere_network" "wan" {
   name          = "WAN"
+  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
+}
+
+data "vsphere_network" "vpn" {
+  name          = "VPN"
   datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
 }
 
