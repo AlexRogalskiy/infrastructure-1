@@ -1,0 +1,4 @@
+---
+
+storage_cifs_host: "storage.home.dmarby.se"
+storage_cifs_mount: "//{{ storage_cifs_host }}/storage"

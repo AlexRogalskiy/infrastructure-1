@@ -1,0 +1,17 @@
+---
+
+- name: Create cifs credential file
+  template:
+    src: cifs_credentials
+    dest: /var/lib/samba/private/cfs_credentials
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Add mount to fstab
+  mount: name="{{ mount_path }}" src="{{ cifs_mount }}" fstype=cifs opts="{{ cifs_options }}" state=mounted
+  when: not read_only
+
+- name: Add readonly mount to fstab
+  mount: name="{{ mount_path }}" src="{{ cifs_mount }}" fstype=cifs opts="{{ cifs_options_read_only }}" state=mounted
+  when: read_only

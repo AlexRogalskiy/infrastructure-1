@@ -23,15 +23,16 @@
 
 - name: Create samba users
   user:
-    name: plex
+    name: "{{ item.key }}"
     shell: /usr/sbin/nologin
     createhome: no
-  with_items:
-    - plex
-    - nzbget
-    - radarr
-    - sonarr
-    - transmission
+  with_dict: "{{ cifs_credentials }}"
+  no_log: True
+
+- name: Set samba password for samba users
+  shell: "(echo {{ item.value }}; echo {{ item.value }}) | smbpasswd -s -a {{ item.key }}"
+  with_dict: "{{ cifs_credentials }}"
+  no_log: True
 
 - name: Add users to storage group
   user:
@@ -45,6 +46,7 @@
     - radarr
     - sonarr
     - transmission
+    - transmission-private
 
 - name: Add users to storage_write group
   user:
@@ -57,6 +59,7 @@
     - radarr
     - sonarr
     - transmission
+    - transmission-private
 
 - name: Add users to timemachine group
   user:

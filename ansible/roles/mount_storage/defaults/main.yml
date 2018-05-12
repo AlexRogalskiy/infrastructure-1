@@ -1,0 +1,5 @@
+read_only: false
+cifs_mount: "{{ storage_cifs_mount }}"
+cifs_options: "rw,credentials=/var/lib/samba/private/cfs_credentials,noperm"
+cifs_options_read_only: "credentials=/var/lib/samba/private/cfs_credentials"
+mount_path: /mnt/Storage

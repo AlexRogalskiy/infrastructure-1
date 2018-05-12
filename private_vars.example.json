@@ -7,7 +7,6 @@
   "vcenter_username": "",
   "ssh_public_key_path": "~/.ssh/id_rsa.pub",
   "ssh_private_key_path": "~/.ssh/id_rsa",
-  "storage_cifs_mount": "//example.com/share",
   "plex_email": "",
   "plex_password": "",
   "certbot_email": "",

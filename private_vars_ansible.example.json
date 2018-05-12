@@ -20,5 +20,8 @@
       "username": "",
       "password": ""
     }
+  },
+  "cifs_credentials": {
+    "transmission": "foobar"
   }
 }
