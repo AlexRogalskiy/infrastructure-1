@@ -1,28 +1,14 @@
 ---
 
-- name: Copy apt settings
-  copy:
-    src: apt-settings
-    dest: /etc/apt/preferences.d/10-apt-pin
-
-- name: Add artful repo
-  apt_repository:
-    repo: deb http://archive.ubuntu.com/ubuntu artful universe
-    state: present
-
 - name: Add packages
   apt:
     name: "{{ item }}"
     state: present
     update_cache: yes
   with_items:
-    - nfs-common
     - nzbget
     - p7zip-full
     - unrar
-
-- name: Add mount to fstab
-  mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
 
 - name: Create nzbget group
   group:
