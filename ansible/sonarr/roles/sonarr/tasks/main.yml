@@ -8,7 +8,7 @@
 
 - name: Add sonarr repo
   apt_repository:
-    repo: deb http://apt.sonarr.tv/ master main
+    repo: deb http://apt.sonarr.tv/ develop main
     state: present
 
 - name: Add mono key
@@ -19,7 +19,7 @@
 
 - name: Add mono repo
   apt_repository:
-    repo: deb http://download.mono-project.com/repo/debian jessie main
+    repo: deb https://download.mono-project.com/repo/ubuntu stable-bionic main
     state: present
 
 - name: Add packages
@@ -28,13 +28,8 @@
     state: present
     update_cache: yes
   with_items:
-    - nfs-common
     - nzbdrone
-    - libmono-cil-dev
-    - libcurl4-openssl-dev
-
-- name: Add mount to fstab
-  mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
+    - mono-devel
 
 - name: Create nzbdrone group
   group:
