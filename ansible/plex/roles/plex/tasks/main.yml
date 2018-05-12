@@ -1,12 +1,17 @@
 ---
 
-- name: Add nfs-common package
-  apt:
-    pkg: nfs-common
-    state: present
+- name: Mount storage
+  include_role:
+    name: ../roles/mount_storage
+  vars:
+    read_only: yes
 
-- name: Add mount to fstab
-  mount: name=/mnt/Storage src="{{ storage_nfs_mount }}" fstype=nfs opts="auto,nofail,noatime,nolock,intr,tcp,actimeo=1800" state=mounted
+- name: Mount plex sync folder on storage
+  include_role:
+    name: ../roles/mount_storage
+  vars:
+    cifs_mount: "//storage.home.dmarby.se/plex"
+    mount_path: "/mnt/Plex"
 
 - name: Add plex user
   user:
@@ -44,7 +49,6 @@
     group: plex
     mode: 0744
     state: directory
-    recurse: yes
 
 - name: Add plex update configuration file
   template:
@@ -73,3 +77,21 @@
   service:
     name: plexupdate
     state: restarted
+
+- name: Create plex sync directory
+  file:
+    path: "/mnt/Plex/Sync+"
+    owner: plex
+    group: plex
+    mode: 0744
+    state: directory
+
+- name: Symlink plex transcode directory
+  file:
+    src: "/mnt/Plex/Sync+"
+    dest: "{{ plex_path }}/Library/Application Support/Plex Media Server/Cache/Transcode/Sync+"
+    owner: plex
+    group: plex
+    mode: 0744
+    state: link
+  notify: restart plex
