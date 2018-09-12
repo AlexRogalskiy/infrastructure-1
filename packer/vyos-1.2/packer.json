@@ -22,10 +22,10 @@
       "RAM": 2048,
       "disk_thin_provisioned": true,
       "disk_size": "4",
-      "network": "VM",
+      "network": "LAN",
 
       "iso_paths": [
-        "[{{user `vcenter_datastore`}}] iso/vyos-1.2.0-rolling+201805040337-amd64.iso"
+        "[{{user `vcenter_datastore`}}] iso/vyos-1.2.0-rolling+201809020337-amd64.iso"
       ],
 
       "boot_command": [
@@ -45,7 +45,7 @@
         "<enter><wait10>",
         "sudo sed -i 's/reboot -d -f -i/eject -m cdrom\\n\\treboot -d -f -i/' /etc/init.d/reboot<enter><wait>",
         "reboot<enter><wait>",
-        "Yes<enter><wait10><wait10><wait10><wait10>",
+        "Yes<enter><wait10><wait10><wait10><wait10><wait10>",
         "vyos<enter><wait>",
         "vyos<enter><wait>",
         "configure<enter><wait>",
@@ -61,7 +61,7 @@
         "sudo mount /dev/fd0 /media<enter><wait>",
         "/media/BASE.SH<enter><wait10>",
         "reboot<enter><wait>",
-        "Yes<enter><wait10><wait10><wait10><wait10><wait10><wait10>"
+        "Yes<enter><wait10><wait10><wait10><wait10><wait10><wait10><wait10><wait10>"
       ],
 
       "floppy_files": [
