@@ -1,14 +1,4 @@
 {
-  "vpn_hostname": "",
-  "vpn_duo_integration_key": "",
-  "vpn_duo_secret_key": "",
-  "vpn_duo_api_hostname": "",
-  "vpn_users": [
-    {
-      "username": "user",
-      "bcrypt_password": "$2a$10$uXDHPMw9NrPWeFw8XFeHdeuc3NqwjF0khL1l5bUHptzI.pCdE2ISa"
-    }
-  ],
   "transmission_username": "",
   "transmission_password": "",
   "nzbget": {
