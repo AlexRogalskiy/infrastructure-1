@@ -1,0 +1,49 @@
+$TTL 60
+@	IN	SOA	home.dmarby.se. hostmaster.dmarby.se. (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@       IN      NS      ns.
+ns      IN      A       10.100.20.11
+
+; Management
+
+router.home.dmarby.se. 60 IN A 10.100.0.1
+core.home.dmarby.se. 60 IN A 10.100.0.10
+sfp.home.dmarby.se. 60 IN A 10.100.0.11
+
+esxi1-ipmi.home.dmarby.se. 60 IN A 10.100.0.20
+esxi2-ipmi.home.dmarby.se. 60 IN A 10.100.0.21
+esxi3-ipmi.home.dmarby.se. 60 IN A 10.100.0.22
+storage-ipmi.home.dmarby.se. 60 IN A 10.100.0.23
+
+ups.home.dmarby.se. 60 IN A 10.100.0.30
+
+esxi1.home.dmarby.se. 60 IN A 10.100.0.40
+esxi2.home.dmarby.se. 60 IN A 10.100.0.41
+esxi3.home.dmarby.se. 60 IN A 10.100.0.42
+vcenter.home.dmarby.se. 60 IN A 10.100.0.50
+
+; Servers
+storage.home.dmarby.se. 60 IN A 10.100.20.10
+
+; VMs
+plex.home.dmarby.se. 60 IN A	10.100.20.20
+unifi.home.dmarby.se. 60 IN A	10.100.20.21
+proxy.home.dmarby.se. 60 IN A 10.100.20.22
+radarr.home.dmarby.se. 60 IN A	10.100.20.23
+sonarr.home.dmarby.se. 60 IN A	10.100.20.24
+transmission.home.dmarby.se. 60 IN A	10.100.20.25
+transmission-private.home.dmarby.se. 60 IN A	10.100.20.26
+nzbget.home.dmarby.se. 60 IN A	10.100.20.27
+
+; Proxy
+usenet.home.dmarby.se. 60 IN CNAME proxy.home.dmarby.se.
+torrent.home.dmarby.se. 60 IN CNAME proxy.home.dmarby.se.
+torrent-private.home.dmarby.se. 60 IN CNAME proxy.home.dmarby.se.
+network.home.dmarby.se. 60 IN CNAME proxy.home.dmarby.se.
+tv.home.dmarby.se. 60 IN CNAME proxy.home.dmarby.se.
+movies.home.dmarby.se. 60 IN CNAME proxy.home.dmarby.se.

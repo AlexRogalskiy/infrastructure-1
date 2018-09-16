@@ -1,0 +1,10 @@
+---
+
+- name: Setup ns
+  hosts: ns
+  become: yes
+
+  roles:
+    - ../roles/expand_root
+    - ../roles/base
+    - ns

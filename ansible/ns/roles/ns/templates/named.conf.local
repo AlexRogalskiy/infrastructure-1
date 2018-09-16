@@ -1,0 +1,17 @@
+zone "home.dmarby.se" {
+  type master;
+  file "/etc/bind/home.dmarby.se";
+
+  allow-update {
+    127.0.0.1;
+  };
+};
+
+zone "10.in-addr.arpa" {
+  type master;
+  file "/etc/bind/db.10";
+
+  allow-update {
+    127.0.0.1;
+  };
+};
