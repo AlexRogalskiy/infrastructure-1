@@ -29,8 +29,7 @@ resource "vsphere_virtual_machine" "ns" {
       }
 
       ipv4_gateway = "10.100.20.1"
-      dns_server_list = ["10.100.20.1"]
-      dns_suffix_list = ["home.dmarby.se"]
+      dns_server_list = ["8.8.8.8"]
 
       linux_options {
         host_name = "ns"
