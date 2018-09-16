@@ -22,10 +22,10 @@
       "RAM": 4096,
       "disk_thin_provisioned": true,
       "disk_size": "8",
-      "network": "VM",
+      "network": "SERVERS",
 
       "iso_paths": [
-        "[{{user `vcenter_datastore`}}] iso/ubuntu-18.04-server-amd64.iso"
+        "[{{user `vcenter_datastore`}}] iso/ubuntu-18.04.1-server-amd64.iso"
       ],
 
       "floppy_files": [

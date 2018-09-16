@@ -7,7 +7,7 @@
   shell: rm -f /etc/ssh/ssh_host_*
 
 - name: Clean up udev
-  shell: rm -f /etc/udev/rules.d/70-persistent-net.rules && mkdir /etc/udev/rules.d/70-persistent-net.rules && rm -rf /dev/.udev/ && rm -f /lib/udev/rules.d/75-persistent-net-generator.rules
+  shell: rm -f /etc/udev/rules.d/70-persistent-net.rules && rm -rf /dev/.udev/ && rm -f /lib/udev/rules.d/75-persistent-net-generator.rules
 
 - name: Clean up apt
   shell: apt-get -qy autoremove && apt-get clean -qy && apt-get autoclean -qy
