@@ -10,6 +10,16 @@
     repo: "deb http://www.ubnt.com/downloads/unifi/debian stable ubiquiti"
     state: present
 
+- name: Add mongodb apt key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "0C49F3730359A14518585931BC711F9BA15703C6"
+
+- name: Add mongodb apt source
+  apt_repository:
+    repo: "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse"
+    state: present
+
 - name: Install packages
   apt:
     name: "{{ item }}"
@@ -17,30 +27,8 @@
     update_cache: yes
   with_items:
     - openjdk-8-jre # Unifi doesn't support newer java, and fails to install it by itself
-    - mongodb # Install mongodb manually so that we can apply our fixes
+    - mongodb-org # Install mongodb manually since we need a specific version from the 3.4 repo
     - rng-tools # Without this we run out of entropy which causes the controller to not start
-
-# Unifi passes a deprecated argument to mongodb, so we need to add a workaround
-- name: Check if mongodb executable has been replaced
-  stat:
-    path: /usr/bin/mongod.bin
-  register: mongodb_replaced
-
-- name: Replace mongo executable
-  copy:
-    remote_src: yes
-    src: /usr/bin/mongod
-    dest: /usr/bin/mongod.bin
-    mode: 'a+x'
-  when: not mongodb_replaced.stat.exists
-
-- name: Replace mongo executable
-  copy:
-    dest: /usr/bin/mongod
-    content: |
-      #!/bin/bash
-      cleaned_args=$(echo $* | sed -e 's/--nohttpinterface//')
-      exec /usr/bin/mongod.bin ${cleaned_args}
 
 - name: Install unifi
   apt:
