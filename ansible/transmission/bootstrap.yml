@@ -2,7 +2,6 @@
 
 - name: Setup transmission
   hosts: transmission
-  user: david
   become: yes
 
   roles:
