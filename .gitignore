@@ -5,10 +5,7 @@ packer-*
 .vagrant
 *.retry
 *.log
-openvpn
-backup
 ansible.log
-openvpn-client
 *.img
 .terraform
 terraform.tfvars
