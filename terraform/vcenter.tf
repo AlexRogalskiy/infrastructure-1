@@ -35,9 +35,14 @@ resource "vsphere_compute_cluster" "dmarby_cluster" {
   datacenter_id   = "${data.vsphere_datacenter.dmarby.id}"
   host_system_ids = ["${data.vsphere_host.hosts.*.id}"]
 
-  drs_enabled = false
+  # Manual DRS until we have vSAN
+  drs_enabled          = true
+  drs_automation_level = "manual"
 
-  # drs_automation_level = "fullyAutomated"
+  # Disable power management
+  dpm_enabled          = false
+  dpm_automation_level = "manual"
+
   ha_enabled = false
 }
 
@@ -45,8 +50,8 @@ resource "vsphere_compute_cluster" "dmarby_cluster" {
 
 variable "network_interfaces" {
   default = [
-    "vmnic0",
-    "vmnic1",
+    "vmnic2",
+    "vmnic1000202",
   ]
 }
 
@@ -57,8 +62,8 @@ resource "vsphere_distributed_virtual_switch" "dvs" {
   network_resource_control_enabled = true
 
   uplinks         = ["uplink1", "uplink2"]
-  active_uplinks  = ["uplink1"]
-  standby_uplinks = []
+  active_uplinks  = ["uplink1"] # TODO: One standby? IDK?
+  standby_uplinks = ["uplink2"]
 
   host {
     host_system_id = "${data.vsphere_host.hosts.0.id}"
@@ -71,21 +76,17 @@ resource "vsphere_distributed_virtual_switch" "dvs" {
   }
 }
 
+# TOOD: Make sure this configures one uplink as active one as standby or w/e it should be
+
 # Configure portgroups for the distributed switch
 resource "vsphere_distributed_port_group" "management" {
   name                            = "Management Network"
   distributed_virtual_switch_uuid = "${vsphere_distributed_virtual_switch.dvs.id}"
-  vlan_id                         = 0
+  vlan_id                         = 100
 }
 
-resource "vsphere_distributed_port_group" "vm" {
-  name                            = "VM"
-  distributed_virtual_switch_uuid = "${vsphere_distributed_virtual_switch.dvs.id}"
-  vlan_id                         = 0
-}
-
-resource "vsphere_distributed_port_group" "vpn" {
-  name                            = "VPN"
+resource "vsphere_distributed_port_group" "servers" {
+  name                            = "SERVERS"
   distributed_virtual_switch_uuid = "${vsphere_distributed_virtual_switch.dvs.id}"
   vlan_id                         = 20
 }
@@ -115,28 +116,6 @@ data "vsphere_datastore" "esxi1" {
 
 data "vsphere_datastore" "esxi2" {
   name          = "esxi2"
-  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
-}
-
-# Networks
-
-data "vsphere_network" "vm" {
-  name          = "VM"
-  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
-}
-
-data "vsphere_network" "lan" {
-  name          = "LAN"
-  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
-}
-
-data "vsphere_network" "wan" {
-  name          = "WAN"
-  datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
-}
-
-data "vsphere_network" "vpn" {
-  name          = "VPN"
   datacenter_id = "${data.vsphere_datacenter.dmarby.id}"
 }
 

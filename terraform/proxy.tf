@@ -8,8 +8,10 @@ resource "vsphere_virtual_machine" "proxy" {
   guest_id = "${data.vsphere_virtual_machine.ubuntu-18_04.guest_id}"
 
   network_interface {
-    network_id   = "${data.vsphere_network.vm.id}"
+    network_id   = "${vsphere_distributed_port_group.servers.id}"
     adapter_type = "${data.vsphere_virtual_machine.ubuntu-18_04.network_interface_types[0]}"
+    use_static_mac = true
+    mac_address    = "00:50:56:a7:40:a6"
   }
 
   disk {
