@@ -1,0 +1,13 @@
+---
+
+- name: Configure the vyos network
+  hosts: all
+  connection: network_cli
+
+  vars:
+    router_hostname: "vyos"
+    router_vlan: "10"
+    router_ip: "10.10.0.2/24" # Temp for setup
+
+  roles:
+    - ../roles/vyos/vyos_network

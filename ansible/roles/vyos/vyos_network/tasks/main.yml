@@ -1,40 +1,9 @@
 ---
 
-- name: Generate ssh key for communication between routers
-  shell: ssh-keygen -b 2048 -t rsa -f ../vyos_rsa -q -N ""
-  args:
-    creates: ../vyos_rsa
-
-- name: Copy configuration script
-  local_action:
-    module: vmware_vm_shell
-    hostname: "{{ vcenter_host }}"
-    username: "{{ vcenter_username }}"
-    password: "{{ vcenter_password }}"
-    datacenter: "{{ vcenter_datacenter }}"
-    validate_certs: no
-    vm_id: "{{ vm_name }}"
-    vm_username: vyos
-    vm_password: vyos
-    vm_shell: /bin/echo
-    vm_shell_args: "'{{ lookup('template', 'network_setup.sh') }}' > ./network_setup && chmod +x network_setup"
-    vm_shell_cwd: "/tmp"
-  ignore_errors: yes
-  register: vyos_network
-
-- name: Run configuration script
-  local_action:
-    module: vmware_vm_shell
-    hostname: "{{ vcenter_host }}"
-    username: "{{ vcenter_username }}"
-    password: "{{ vcenter_password }}"
-    datacenter: "{{ vcenter_datacenter }}"
-    validate_certs: no
-    vm_id: "{{ vm_name }}"
-    vm_username: vyos
-    vm_password: vyos
-    vm_shell: /bin/vbash
-    vm_shell_args: "network_setup"
-    vm_shell_cwd: "/tmp"
-  ignore_errors: yes
-  register: vyos_network
+- name: Update vyos network configuration
+  vyos_config:
+    lines:
+      - "set system host-name {{ router_hostname }}"
+      - "set interfaces ethernet eth0 vif {{ router_vlan }} address '{{ router_ip }}'"
+      - "set interfaces ethernet eth0 vif {{ router_vlan }} description 'LAN'"
+    save: yes
