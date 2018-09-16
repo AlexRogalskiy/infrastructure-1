@@ -6,8 +6,8 @@
     - torrent
     - torrent_private
     - usenet
-    - sonarr
-    - radarr
+    - tv
+    - movies
     - network
   notify:
     - restart nginx
