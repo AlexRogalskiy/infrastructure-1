@@ -2,7 +2,6 @@
 
 - name: Setup nzbget
   hosts: nzbget
-  user: david
   become: yes
 
   roles:

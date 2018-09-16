@@ -2,7 +2,6 @@
 
 - name: Setup proxy
   hosts: proxy
-  user: david
   become: yes
 
   vars:

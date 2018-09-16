@@ -2,7 +2,6 @@
 
 - name: Setup plex
   hosts: plex
-  user: david
   become: yes
 
   roles:
