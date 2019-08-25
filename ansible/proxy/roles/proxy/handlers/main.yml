@@ -1,0 +1,6 @@
+- name: restart proxy
+  docker_service:
+    project_src: "/opt/proxy"
+    restarted: "yes"
+    services:
+      - "caddy"

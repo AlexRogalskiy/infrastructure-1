@@ -4,10 +4,10 @@
   apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
 
 - name: Add nginx repo
-  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ trusty nginx' state=present
+  apt_repository: repo='deb http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx' state=present
 
 - name: Add nginx source repo
-  apt_repository: repo='deb-src http://nginx.org/packages/ubuntu/ trusty nginx' state=present
+  apt_repository: repo='deb-src http://nginx.org/packages/ubuntu/ {{ ansible_distribution_release }} nginx' state=present
 
 - name: Ensure nginx package is present
   apt: name=nginx state=latest update_cache=yes

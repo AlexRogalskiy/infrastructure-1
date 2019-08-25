@@ -1,0 +1,23 @@
+version: "2"
+services:
+  caddy:
+    build: ./caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/Caddyfile
+      - ./caddy/login:/etc/login
+      - ./.caddy:/root/.caddy
+    environment:
+      - JWT_SECRET={{ jwt_secret }}
+    restart: always
+
+  huproxy:
+    command: -listen 0.0.0.0:8086
+    build: ./huproxy
+    restart: always
+    dns:
+      - 10.100.20.1
+    dns_opt:
+      - ndots:1

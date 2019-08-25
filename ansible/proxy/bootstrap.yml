@@ -4,14 +4,9 @@
   hosts: proxy
   become: yes
 
-  vars:
-    certbot_domains:
-      - domain: "network.home.dmarby.se"
-        delegated: "home.dmarby.se"
-
   roles:
     - ../roles/expand_root
     - ../roles/base
-    - ../roles/certbot
-    - ../roles/nginx
-    - proxy
+    - ../roles/docker/daemon
+    - ../roles/docker/compose
+    - { role: proxy, tags: proxy }

@@ -1,13 +1,25 @@
 ---
 
-- name: Copy nginx configs
-  template: src="{{ item }}.conf" dest="/etc/nginx/conf.d/{{ item }}.conf"
-  with_items:
-    - torrent
-    - torrent_private
-    - usenet
-    - tv
-    - movies
-    - network
+- name: Copy files
+  copy:
+    src: docker/
+    dest: /opt/proxy
+    owner: root
+    group: root
+    mode: 0700
   notify:
-    - restart nginx
+    - restart proxy
+
+- name: Copy docker-compose
+  template:
+    src: docker-compose.yml
+    dest: /opt/proxy/docker-compose.yml
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Run docker_compose
+  docker_service:
+    build: yes
+    state: present
+    project_src: "/opt/proxy"

@@ -13,5 +13,6 @@
   },
   "cifs_credentials": {
     "transmission": "foobar"
-  }
+  },
+  "jwt_secret": ""
 }
