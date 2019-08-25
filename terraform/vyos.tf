@@ -1,27 +1,31 @@
 resource "vsphere_virtual_machine" "vyos" {
   name             = "vyos"
-  resource_pool_id = "${vsphere_compute_cluster.dmarby_cluster.resource_pool_id}"
-  datastore_id     = "${data.vsphere_datastore.esxi1.id}"
+  tags             = [vsphere_tag.vyos.id]
+  resource_pool_id = vsphere_compute_cluster.dmarby_cluster.resource_pool_id
+  datastore_id     = data.vsphere_datastore.esxi1.id
   num_cpus         = 4
   memory           = 2048
-  guest_id         = "${data.vsphere_virtual_machine.vyos-1_2.guest_id}"
+  guest_id         = data.vsphere_virtual_machine.vyos-1_2.guest_id
   network_interface {
-    network_id   = "${vsphere_distributed_port_group.lan.id}"
+    network_id   = vsphere_distributed_port_group.lan.id
     adapter_type = "vmxnet3"
+    bandwidth_share_level = "high"
   }
   network_interface {
-    network_id     = "${vsphere_distributed_port_group.wan.id}"
+    network_id     = vsphere_distributed_port_group.wan.id
     adapter_type   = "vmxnet3"
     use_static_mac = true
-    mac_address    = "00:50:56:a7:5e:6a"
+    mac_address    = "00:50:56:a7:5e:6b"
+    bandwidth_share_level = "high"
   }
   disk {
     label = "disk0"
     size  = 4
   }
   clone {
-    template_uuid = "${data.vsphere_virtual_machine.vyos-1_2.id}"
+    template_uuid = data.vsphere_virtual_machine.vyos-1_2.id
   }
+
   # Configure the network
   provisioner "local-exec" {
     working_dir = "../"
@@ -29,7 +33,7 @@ resource "vsphere_virtual_machine" "vyos" {
   }
   # Prevent terraform from recreating VMs when we update the template
   lifecycle {
-    ignore_changes = ["clone.0.template_uuid", "disk.0"]
+    ignore_changes = [clone.0.template_uuid, disk.0]
   }
 }
 
