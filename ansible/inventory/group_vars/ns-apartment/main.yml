@@ -1,0 +1,7 @@
+---
+
+ns_hostname: "ns-apartment"
+ns_ip: "10.20.20.11"
+ns_ip_reverse: "11.20.20"
+
+unifi_ip: "10.20.20.21"

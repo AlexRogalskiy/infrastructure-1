@@ -1,7 +1,7 @@
 ---
 
 - name: Setup unifi
-  hosts: unifi
+  hosts: type_unifi
   become: yes
 
   roles:
