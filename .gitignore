@@ -7,8 +7,9 @@ packer-*
 *.log
 ansible.log
 *.img
+*.iso
 .terraform
 terraform.tfvars
 terraform.tf
 *.tfstate*
-packer/roles/vmtools/files/vmware-tools.tar.gz
+*.ova
