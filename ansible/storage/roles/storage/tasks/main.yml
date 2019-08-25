@@ -65,3 +65,23 @@
     mode: 0600
   notify:
     - update initramfs
+
+- name: Copy flashcache sysctl
+  copy:
+    src: 60-flashcache.conf
+    dest: /etc/sysctl.d/60-flashcache.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload sysctl
+
+- name: Create flashcache sysctl service
+  copy: src=flashcache-sysctl.service dest=/etc/systemd/system/flashcache-sysctl.service
+  notify:
+    - reload systemd
+
+- name: Start flashcache sysctl
+  systemd:
+    name: flashcache-sysctl
+    enabled: yes

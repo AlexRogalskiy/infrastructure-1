@@ -1,0 +1,9 @@
+[Unit]
+Description=Flashcache sysctl
+After=storage.mount
+
+[Service]
+ExecStart=/sbin/sysctl -p /etc/sysctl.d/60-flashcache.conf
+
+[Install]
+WantedBy=multi-user.target

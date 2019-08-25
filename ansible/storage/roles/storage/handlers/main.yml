@@ -8,3 +8,9 @@
 
 - name: vgscan
   command: vgscan
+
+- name: reload sysctl
+  command: /sbin/sysctl -p /etc/sysctl.d/60-flashcache.conf
+
+- name: reload systemd
+  command: systemctl daemon-reload

@@ -9,4 +9,5 @@
     - { role: storage, tags: storage }
     - { role: samba, tags: samba }
     - { role: avahi, tags: avahi }
+    - { role: ups, tags: ups }
     - { role: iptables, tags: iptables }
