@@ -1,7 +1,0 @@
-vpn_ip_range: 10.10.0.0/24
-vpn_ip_ranges_local:
-  - 10.0.0.0/24
-  - 10.0.20.0/24
-vpn_local_dns: 10.0.0.1
-rsa_bits: 2048
-cert_dir: /config/auth/openvpn

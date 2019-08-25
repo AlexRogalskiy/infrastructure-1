@@ -21,12 +21,14 @@
       "CPUs": 4,
       "RAM": 2048,
       "disk_thin_provisioned": true,
-      "disk_size": "4",
+      "disk_size": 4096,
       "network": "LAN",
 
-      "iso_paths": [
-        "[{{user `vcenter_datastore`}}] iso/vyos-1.2.0-rolling+201809020337-amd64.iso"
+      "iso_urls": [
+        "./vyos-1.2-rolling-201908240337-amd64.iso"
       ],
+      "iso_checksum": "b6fd86713cc523765539ebdbd8f476f9f32f4666c473162e9a8bf3b026ac7deb",
+      "iso_checksum_type": "sha256",
 
       "boot_command": [
         "<enter><wait10><wait10>",
@@ -58,14 +60,16 @@
         "Yes<enter><wait10><wait10><wait10><wait10>",
         "david<enter><wait>",
         "vyos<enter><wait>",
-        "sudo mount /dev/fd0 /media<enter><wait>",
-        "/media/BASE.SH<enter><wait10>",
+        "configure<enter><wait>",
+        "set interface ethernet eth0 vif 20 address dhcp<enter><wait>",
+        "set service ssh<enter><wait>",
+        "set service ssh disable-host-validation<enter><wait>",
+        "delete system login user vyos<enter><wait>",
+        "commit<enter><wait>",
+        "save<enter><wait>",
+        "exit<enter><wait>",
         "reboot<enter><wait>",
         "Yes<enter><wait10><wait10><wait10><wait10><wait10><wait10><wait10><wait10>"
-      ],
-
-      "floppy_files": [
-        "packer/vyos-1.2/scripts/base.sh"
       ],
 
       "boot_order": "disk,cdrom",

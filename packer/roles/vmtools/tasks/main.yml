@@ -1,15 +1,7 @@
 ---
 
-- name: Ensure open-vm-tools is not present
+- name: Ensure open-vm-tools is up to date
   apt:
     name: "open-vm-tools"
-    state: absent
-    purge: yes
-
-- name: Copy vmware tools
-  copy:
-    src: vmware-tools.tar.gz
-    dest: /tmp/vmware-tools.tar.gz
-
-- name: Extract and install vmware tools
-  shell: cd /tmp && tar -zxpf /tmp/vmware-tools.tar.gz -C /tmp/ && /tmp/vmware-tools-distrib/vmware-install.pl --force-install --default
+    state: latest
+    update_cache: yes

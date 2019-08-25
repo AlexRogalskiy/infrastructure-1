@@ -13,15 +13,13 @@
 
 - name: Add packages
   apt:
-    name: "{{ item }}"
+    name:
+      - docker-ce
     state: present
     update_cache: yes
-  with_items:
-    - docker-ce
 
 - name: Enable & start docker
   systemd:
     name: docker
     enabled: yes
     state: started
-

@@ -22,13 +22,12 @@
 
 - name: Install packages
   apt:
-    name: "{{ item }}"
+    name:
+      - openjdk-8-jre # Unifi doesn't support newer java, and fails to install it by itself
+      - mongodb-org # Install mongodb manually since we need a specific version from the 3.4 repo
+      - rng-tools # Without this we run out of entropy which causes the controller to not start
     state: latest
     update_cache: yes
-  with_items:
-    - openjdk-8-jre # Unifi doesn't support newer java, and fails to install it by itself
-    - mongodb-org # Install mongodb manually since we need a specific version from the 3.4 repo
-    - rng-tools # Without this we run out of entropy which causes the controller to not start
 
 - name: Install unifi
   apt:

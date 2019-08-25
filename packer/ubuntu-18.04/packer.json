@@ -21,12 +21,14 @@
       "CPUs": 4,
       "RAM": 4096,
       "disk_thin_provisioned": true,
-      "disk_size": "8",
+      "disk_size": "8192",
       "network": "SERVERS",
 
-      "iso_paths": [
-        "[{{user `vcenter_datastore`}}] iso/ubuntu-18.04.1-server-amd64.iso"
+      "iso_urls": [
+        "./ubuntu-18.04.3-server-amd64.iso"
       ],
+      "iso_checksum": "7d8e0055d663bffa27c1718685085626cb59346e7626ba3d3f476322271f573e",
+      "iso_checksum_type": "sha256",
 
       "floppy_files": [
         "packer/ubuntu-18.04/preseed.cfg"
