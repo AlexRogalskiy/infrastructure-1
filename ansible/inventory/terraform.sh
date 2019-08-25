@@ -1,2 +1,2 @@
 #!/bin/bash
-terraform-inventory $@ terraform/terraform.tfstate
+terraform-inventory $@ terraform
