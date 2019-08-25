@@ -1,0 +1,38 @@
+{
+  "builders": [
+    {
+      "type":            "dummy-artifacts",
+      "builder_id":      "mitchellh.vmware-esx",
+      "files": [
+        "packer/eaton-ipm/IPM-1.61.215.VA64_OVF10.ova"
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vsphere",
+        "username": "{{user `vcenter_username`}}",
+        "password": "{{user `vcenter_password`}}",
+        "datacenter": "{{user `vcenter_datacenter`}}",
+        "cluster": "{{user `vcenter_cluster`}}",
+        "host": "{{user `vcenter_host`}}",
+        "datastore": "{{user `vcenter_datastore`}}",
+        "disk_mode": "thin",
+        "vm_name": "eaton-ipm-template",
+        "options": [
+          "--net:bridged=SERVERS"
+        ],
+        "insecure": true
+      },
+      {
+        "type": "vsphere-template",
+        "username": "{{user `vcenter_username`}}",
+        "password": "{{user `vcenter_password`}}",
+        "datacenter": "{{user `vcenter_datacenter`}}",
+        "host": "{{user `vcenter_host`}}",
+        "insecure": true
+      }
+    ]
+  ]
+}
