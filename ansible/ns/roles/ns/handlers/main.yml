@@ -1,6 +1,7 @@
 ---
 
-- name: restart bind
-  service:
-    name: bind9
-    state: restarted
+- name: restart coredns
+  docker_service:
+    project_name: "{{ coredns_docker_service.name }}"
+    definition: "{{ coredns_docker_service.definition }}"
+    restarted: "yes"

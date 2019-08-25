@@ -1,0 +1,23 @@
+. {
+    forward . tls://1.1.1.1 tls://1.0.0.1 {
+      tls_servername tls.cloudflare-dns.com
+      health_check 5s
+    }
+
+    cache
+}
+
+10.in-addr.arpa home.dmarby.se {
+  root /data
+  file home.dmarby.se home.dmarby.se
+  file reverse 10.in-addr.arpa
+
+  cache
+}
+
+unifi {
+  root /data
+  file unifi
+
+  cache
+}

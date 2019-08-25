@@ -1,0 +1,7 @@
+---
+
+ns_hostname: "ns"
+ns_ip: "10.100.20.11"
+ns_ip_reverse: "11.20.100"
+
+unifi_ip: "10.100.20.21"

@@ -1,0 +1,11 @@
+$TTL 60
+@	IN	SOA	unifi. hostmaster.dmarby.se. (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@       IN      A       {{ unifi_ip }}
+@       IN      NS      {{ ns_hostname }}.
+{{ ns_hostname }}      IN      A       {{ ns_ip }}

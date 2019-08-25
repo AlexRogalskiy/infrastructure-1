@@ -1,0 +1,15 @@
+coredns_docker_service:
+  name: coredns
+  definition:
+    version: "3.2"
+    services:
+      coredns:
+        image: coredns/coredns
+        command: -conf /data/Corefile
+        ports:
+          - "{{ ansible_default_ipv4.address }}:53:53/tcp"
+          - "{{ ansible_default_ipv4.address }}:53:53/udp"
+        volumes:
+          - /opt/coredns:/data:ro
+        read_only: true
+        restart: always

@@ -6,6 +6,8 @@ $TTL    60
 			2419200		; Expire
 			 604800 )	; Negative Cache TTL
 ;
-@         IN      NS      ns.
-11.20.100   IN      PTR     ns.home.dmarby.se.
+@         IN      NS      {{ ns_hostname }}.
+{{ ns_ip_reverse }}   IN      PTR     {{ ns_hostname }}.home.dmarby.se.
 50.0.100  IN      PTR     vcenter.home.dmarby.se.
+
+10.20.100 IN PTR storage.home.dmarby.se.

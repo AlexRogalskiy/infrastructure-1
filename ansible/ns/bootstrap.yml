@@ -1,10 +1,12 @@
 ---
 
 - name: Setup ns
-  hosts: ns
+  hosts: type_ns
   become: yes
 
   roles:
     - ../roles/expand_root
     - ../roles/base
-    - ns
+    - ../roles/docker/daemon
+    - ../roles/docker/compose
+    - { role: ns, tags: ns }

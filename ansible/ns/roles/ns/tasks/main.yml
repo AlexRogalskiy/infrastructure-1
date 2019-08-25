@@ -1,29 +1,33 @@
 ---
 
-- name: Install DNS server
+- name: Install dnsutils
   apt:
-    name: "{{ item }}"
+    name: dnsutils
     state: present
-    update_cache: yes
-  with_items:
-    - bind9
-    - dnsutils
 
-- name: Enable bind9
-  systemd:
-    name: bind9
-    daemon_reload: yes
-    enabled: yes
+- name: Create configuration dir
+  file:
+    path: /opt/coredns
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
 
-- name: Add configs
+- name: Copy configuration
   template:
     src: "{{ item }}"
-    dest: "/etc/bind/{{ item }}"
-    owner: bind
-    group: bind
-  notify: restart bind
-  with_items:
-    - named.conf.local
-    - named.conf.options
-    - home.dmarby.se
-    - db.10
+    dest: "/opt/coredns/{{ item | basename }}"
+    owner: root
+    group: root
+    mode: 0700
+  with_fileglob:
+    - coredns/*
+  notify: restart coredns
+
+- name: Run coredns
+  docker_service:
+    build: yes
+    state: present
+    project_name: "{{ coredns_docker_service.name }}"
+    definition: "{{ coredns_docker_service.definition }}"
+    debug: True
