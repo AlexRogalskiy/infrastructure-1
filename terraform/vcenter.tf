@@ -160,3 +160,15 @@ resource "vsphere_tag" "unifi" {
   category_id = vsphere_tag_category.type.id
   description = "Managed by Terraform"
 }
+
+resource "vsphere_tag" "backup" {
+  name        = "backup"
+  category_id = vsphere_tag_category.type.id
+  description = "Managed by Terraform"
+}
+
+resource "vsphere_tag" "homebridge" {
+  name        = "homebridge"
+  category_id = vsphere_tag_category.type.id
+  description = "Managed by Terraform"
+}

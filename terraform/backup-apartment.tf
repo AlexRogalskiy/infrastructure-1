@@ -1,23 +1,23 @@
-resource "vsphere_virtual_machine" "unifi-apartment" {
-  name             = "unifi-apartment"
-  tags             = [vsphere_tag.unifi.id]
+resource "vsphere_virtual_machine" "backup-apartment" {
+  name             = "backup-apartment"
+  tags             = [vsphere_tag.backup.id]
   resource_pool_id = vsphere_compute_cluster.apartment_cluster.resource_pool_id
   datastore_id     = data.vsphere_datastore.esxi-apartment.id
 
-  num_cpus = 1
-  memory   = 1024
+  num_cpus = 2
+  memory   = 2048
   guest_id = data.vsphere_virtual_machine.ubuntu-18_04.guest_id
 
   network_interface {
     network_id     = vsphere_distributed_port_group.apartment_servers.id
     adapter_type   = data.vsphere_virtual_machine.ubuntu-18_04.network_interface_types[0]
     use_static_mac = true
-    mac_address    = "00:50:56:a7:40:c2" # Set to a static mac address for DHCP
+    mac_address    = "00:50:56:a7:40:c1"
   }
 
   disk {
     label = "disk0"
-    size  = 20
+    size  = 750
   }
 
   clone {
@@ -28,7 +28,7 @@ resource "vsphere_virtual_machine" "unifi-apartment" {
       }
 
       linux_options {
-        host_name = "unifi-apartment"
+        host_name = "backup-apartment"
         domain    = "home.dmarby.se"
       }
     }

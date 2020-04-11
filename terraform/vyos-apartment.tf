@@ -12,7 +12,7 @@ resource "vsphere_virtual_machine" "vyos-apartment" {
     bandwidth_share_level = "high"
   }
   network_interface {
-    network_id     = vsphere_distributed_port_group.apartment_wan.id
+    network_id     = vsphere_distributed_port_group.apartment_dedicated_wan.id
     adapter_type   = "vmxnet3"
     use_static_mac = true
     mac_address    = "00:50:56:a7:5e:6e"
