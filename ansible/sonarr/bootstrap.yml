@@ -8,4 +8,4 @@
     - ../roles/expand_root
     - ../roles/base
     - ../roles/mount_storage
-    - sonarr
+    - { role: 'sonarr', tags: 'sonarr' }

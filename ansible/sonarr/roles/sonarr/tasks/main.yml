@@ -8,13 +8,13 @@
 
 - name: Add sonarr repo
   apt_repository:
-    repo: deb http://apt.sonarr.tv/ develop main
+    repo: deb http://apt.sonarr.tv/ubuntu bionic main
     state: present
 
 - name: Add mono key
   apt_key:
     keyserver: keyserver.ubuntu.com
-    id: 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+    id: 2009837CBFFD68F45BC180471F4F90DE2A9B4BF8
     state: present
 
 - name: Add mono repo
@@ -22,40 +22,21 @@
     repo: deb https://download.mono-project.com/repo/ubuntu stable-bionic main
     state: present
 
+- name: Add mediainfo key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: C5CDF62C7AE05CC847657390C10E11090EC0E438
+    state: present
+
+- name: Add mediainfo repo
+  apt:
+    deb: https://mediaarea.net/repo/deb/repo-mediaarea_1.0-11_all.deb
+
 - name: Add packages
   apt:
-    name: "{{ item }}"
+    name: 'sonarr'
     state: present
     update_cache: yes
-  with_items:
-    - nzbdrone
-    - mono-devel
-
-- name: Create nzbdrone group
-  group:
-    name: nzbdrone
-    state: present
-
-- name: Create nzbdrone User
-  user:
-    name: nzbdrone
-    shell: /bin/bash
-    groups: nzbdrone
-    append: yes
-
-- name: Ensure sonarr directory exists and has correct permissions
-  file:
-    path: /opt/NzbDrone
-    owner: nzbdrone
-    group: nzbdrone
-    state: directory
-    recurse: yes
-
-- name: Create sonarr service
-  copy: src=sonarr.service dest=/etc/systemd/system/sonarr.service
-  notify:
-    - reload systemd
-    - restart sonarr
 
 - name: Start sonarr
   systemd:
