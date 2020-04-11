@@ -1,0 +1,18 @@
+---
+
+homebridge_service:
+  version: "2"
+  services:
+    homebridge:
+      image: oznu/homebridge:latest
+      container_name: homebridge
+      restart: always
+      network_mode: host
+      environment:
+        - TZ=Europe/Stockholm
+        - PGID=1000
+        - PUID=1000
+        - HOMEBRIDGE_CONFIG_UI=1
+        - HOMEBRIDGE_CONFIG_UI_PORT=8080
+      volumes:
+        - /opt/homebridge:/homebridge

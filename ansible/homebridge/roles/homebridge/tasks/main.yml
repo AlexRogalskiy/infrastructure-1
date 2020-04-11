@@ -1,0 +1,7 @@
+---
+
+- name: Run docker_compose
+  docker_compose:
+    state: present
+    project_name: homebridge
+    definition: '{{ homebridge_service }}'

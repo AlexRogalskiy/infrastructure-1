@@ -1,0 +1,12 @@
+---
+
+- name: Setup homebridge
+  hosts: type_homebridge
+  become: yes
+
+  roles:
+    - ../roles/expand_root
+    - ../roles/base
+    - ../roles/docker/daemon
+    - ../roles/docker/compose
+    - { role: homebridge, tags: homebridge }
