@@ -1,10 +1,10 @@
 . {
     forward . tls://1.1.1.1 tls://1.0.0.1 {
       tls_servername tls.cloudflare-dns.com
-      health_check 5s
     }
 
     cache
+    errors
 }
 
 10.in-addr.arpa home.dmarby.se {
